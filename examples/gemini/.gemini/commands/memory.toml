@@ -1,0 +1,2 @@
+description = "Recall relevant memories for the current task"
+prompt = "Run the shell command !{aam recall \"{{args}}\" --limit 10} and use the output as context for the task: {{args}}"

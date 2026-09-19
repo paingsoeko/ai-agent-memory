@@ -1,0 +1,24 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "aam recall \"project overview, conventions and recent decisions\" --core --limit 12 2>/dev/null || true"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "aam ingest --from-hook --agent claude --json >/dev/null 2>&1 || true"
+          }
+        ]
+      }
+    ]
+  }
+}

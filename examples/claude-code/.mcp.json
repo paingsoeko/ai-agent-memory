@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "ai-memory": {
+      "command": "npx",
+      "args": ["-y", "@ai-memory/mcp"]
+    }
+  }
+}

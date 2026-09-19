@@ -1,0 +1,30 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "composite": false,
+    "noEmit": true,
+    "declaration": false,
+    "declarationMap": false,
+    "sourceMap": false,
+    "baseUrl": ".",
+    "paths": {
+      "@ai-memory/core": ["packages/core/src/index.ts"],
+      "@ai-memory/embeddings": ["packages/embeddings/src/index.ts"],
+      "@ai-memory/cli": ["packages/cli/src/index.ts"],
+      "@ai-memory/mcp": ["packages/mcp/src/index.ts"],
+      "@ai-memory/adapter-claude": ["packages/adapters/claude/src/index.ts"],
+      "@ai-memory/adapter-codex": ["packages/adapters/codex/src/index.ts"],
+      "@ai-memory/adapter-gemini": ["packages/adapters/gemini/src/index.ts"],
+      "@ai-memory/adapter-opencode": ["packages/adapters/opencode/src/index.ts"],
+      "@ai-memory/adapter-openrouter": ["packages/adapters/openrouter/src/index.ts"]
+    }
+  },
+  "include": [
+    "packages/*/src/**/*.ts",
+    "packages/adapters/*/src/**/*.ts",
+    "packages/*/test/**/*.ts",
+    "packages/adapters/*/test/**/*.ts",
+    "tests/**/*.ts",
+    "vitest.config.ts"
+  ]
+}

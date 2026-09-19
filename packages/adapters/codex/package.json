@@ -1,0 +1,49 @@
+{
+  "name": "@ai-memory/adapter-codex",
+  "version": "0.1.0",
+  "description": "codex integration helpers for @ai-memory (bootstrap instructions, hooks, config, context formatting)",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run --root ../.. packages/adapters/codex"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ai-memory/ai-memory.git",
+    "directory": "packages/adapters/codex"
+  },
+  "keywords": [
+    "ai",
+    "memory",
+    "agents",
+    "local-first",
+    "sqlite",
+    "mcp",
+    "claude",
+    "codex",
+    "gemini"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@ai-memory/core": "workspace:^"
+  }
+}
