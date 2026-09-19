@@ -1,6 +1,6 @@
 {
   "name": "@ai-agent-memory/server",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Local REST API + static host for the AI Memory web UI (zero extra runtime dependencies)",
   "license": "MIT",
   "author": "paingsoeko",
