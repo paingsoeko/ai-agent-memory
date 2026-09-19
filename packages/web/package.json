@@ -1,0 +1,26 @@
+{
+  "name": "@ai-agent-memory/web",
+  "version": "0.1.2",
+  "private": true,
+  "description": "Local-first AI Agent Memory — inspection and management dashboard",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -p tsconfig.json && vite build",
+    "preview": "vite preview --port 4124",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "lucide-react": "^0.469.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.7.0",
+    "typescript": "^5.8.0",
+    "vite": "^6.4.3"
+  }
+}

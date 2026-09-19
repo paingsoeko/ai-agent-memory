@@ -63,6 +63,10 @@ const OPTIONS = {
   "raw-only": { type: "boolean", default: false },
   path: { type: "string" },
   "order-by": { type: "string" },
+  port: { type: "string" },
+  host: { type: "string" },
+  static: { type: "string" },
+  open: { type: "boolean", default: false },
   summary: { type: "string" },
   name: { type: "string" },
   "include-expired": { type: "boolean", default: false },
@@ -99,6 +103,7 @@ Commands
   privacy                      Show the privacy posture
   config                       Show effective configuration and where it came from
   mcp                          Show how to run the MCP server
+  serve                        Start the local web UI + REST API (http://127.0.0.1:4123)
 
 Global options
   --json                Machine-readable JSON output
@@ -831,6 +836,65 @@ export async function runCli(argv: string[], io: CliIO = defaultIO()): Promise<n
             "See docs/mcp.md and docs/integrations/ for details.",
           ].join("\n"),
         );
+        return 0;
+      }
+      case "serve": {
+        const { startServer } = await import("@ai-agent-memory/server");
+        const port = num(v.port, "port") ?? 4123;
+        const host = v.host ?? "127.0.0.1";
+        const candidates = [
+          v.static ? resolve(io.cwd, v.static) : null,
+          // Monorepo layout: packages/cli/dist -> ../../web/dist
+          new URL("../../web/dist/index.html", import.meta.url).pathname.replace(
+            /\/index\.html$/,
+            "",
+          ),
+          // Installed layout: node_modules/@ai-agent-memory/web/dist
+          resolve(io.cwd, "node_modules/@ai-agent-memory/web/dist"),
+        ].filter(Boolean) as string[];
+        const { existsSync: exists } = await import("node:fs");
+        const staticDir = candidates.find((c) => exists(join(c, "index.html")));
+        const srv = await startServer({
+          port,
+          host,
+          staticDir,
+          cwd: io.cwd,
+          env: io.env,
+          configPath: v.config,
+          ...(v.db ? { path: resolve(io.cwd, v.db) } : {}),
+          ...(v.project ? { project: v.project } : {}),
+        });
+        out({ url: srv.url, api: `${srv.url}/api/health` }, () =>
+          [
+            `✓ AI Memory UI: ${srv.url}`,
+            `  REST API:      ${srv.url}/api/health`,
+            staticDir
+              ? ""
+              : "  (web UI bundle not found — serving API only; run `pnpm --filter @ai-agent-memory/web build`)",
+            "  Press Ctrl+C to stop.",
+          ]
+            .filter(Boolean)
+            .join("\n"),
+        );
+        if (v.open) {
+          const { execFile } = await import("node:child_process");
+          const opener =
+            process.platform === "darwin"
+              ? "open"
+              : process.platform === "win32"
+                ? "cmd"
+                : "xdg-open";
+          const args = process.platform === "win32" ? ["/c", "start", srv.url] : [srv.url];
+          execFile(opener, args, () => {});
+        }
+        // Keep the process alive until interrupted; `finally` below must not
+        // close anything since this engine belongs to the server.
+        await new Promise<void>((resolveStop) => {
+          const stop = () => resolveStop();
+          process.once("SIGINT", stop);
+          process.once("SIGTERM", stop);
+        });
+        await srv.close();
         return 0;
       }
       default:

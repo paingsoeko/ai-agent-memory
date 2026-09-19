@@ -38,6 +38,20 @@ aam recall "database preference"
 0.734  3f9c1a2e  [preference | user]  I prefer PostgreSQL for backend projects.
 ```
 
+## Web UI
+
+Inspect and manage memory in the browser — what your AI remembers, where it
+came from, and where it is used:
+
+```bash
+aam serve --open   # http://127.0.0.1:4123  (dashboard + REST API)
+```
+
+Overview, memory explorer with hybrid search and filters, provenance
+timelines, scenes, core memory curation, projects, sessions, sources,
+conflict review and settings. Served locally from your database; press
+`⌘K` to search. See [docs/web-ui.md](docs/web-ui.md).
+
 Then connect an agent (see [Connect your agents](#connect-your-agents)).
 
 ## Core concepts
@@ -217,6 +231,8 @@ Network providers also require `"privacy": { "allowNetworkEmbeddings": true }`. 
 | [`@ai-agent-memory/cli`](packages/cli) | The `aam` command-line tool |
 | [`@ai-agent-memory/mcp`](packages/mcp) | MCP server exposing the memory tools |
 | [`@ai-agent-memory/embeddings`](packages/embeddings) | Optional embedding providers: OpenAI-compatible APIs, OpenRouter, Ollama, transformers.js |
+| [`@ai-agent-memory/server`](packages/server) | Local REST API + static host for the web UI (zero extra runtime deps) |
+| [`@ai-agent-memory/web`](packages/web) | Memory inspection dashboard (React + Vite, served by `aam serve`) |
 | `@ai-agent-memory/adapter-*` | Bootstrap text, hooks and config snippets per agent ([claude](packages/adapters/claude), [codex](packages/adapters/codex), [gemini](packages/adapters/gemini), [opencode](packages/adapters/opencode), [openrouter](packages/adapters/openrouter)). No storage logic. |
 
 ## How it works
@@ -232,7 +248,7 @@ Raw event → Extraction → Atomic memory → Dedup → Scoring → Scene clust
 ## Documentation
 
 - Concepts: [Architecture](docs/architecture.md) · [Memory model](docs/memory-model.md) · [Retrieval](docs/retrieval.md) · [Security & privacy](docs/security-privacy.md)
-- Reference: [CLI](docs/cli.md) · [API](docs/api.md) · [MCP server](docs/mcp.md) · [Configuration](docs/configuration.md)
+- Reference: [CLI](docs/cli.md) · [API](docs/api.md) · [MCP server](docs/mcp.md) · [Configuration](docs/configuration.md) · [Web UI](docs/web-ui.md)
 - Integrations: [Claude Code](docs/integrations/claude-code.md) · [Codex](docs/integrations/codex.md) · [Gemini CLI](docs/integrations/gemini-cli.md) · [OpenCode](docs/integrations/opencode.md) · [OpenRouter](docs/integrations/openrouter.md) · [Custom agents](docs/integrations/custom-agents.md)
 - Examples: [`examples/`](examples)
 

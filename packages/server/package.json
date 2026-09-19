@@ -1,0 +1,38 @@
+{
+  "name": "@ai-agent-memory/server",
+  "version": "0.1.2",
+  "description": "Local REST API + static host for the AI Memory web UI (zero extra runtime dependencies)",
+  "license": "MIT",
+  "author": "paingsoeko",
+  "type": "module",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "bin": {
+    "ai-memory-server": "./dist/bin.js"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run --root ../.. packages/server"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@ai-agent-memory/core": "workspace:^",
+    "@ai-agent-memory/embeddings": "workspace:^"
+  }
+}

@@ -6,5 +6,5 @@
     "tsBuildInfoFile": "./tsconfig.tsbuildinfo"
   },
   "include": ["src/**/*.ts"],
-  "references": [{ "path": "../core" }, { "path": "../embeddings" }, { "path": "../server" }]
+  "references": [{ "path": "../core" }, { "path": "../embeddings" }]
 }

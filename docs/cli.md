@@ -27,6 +27,7 @@ aam --help
 | `privacy` | Privacy posture |
 | `config` | Effective configuration and its sources |
 | `mcp` | MCP setup snippets |
+| `serve [--port 4123] [--host 127.0.0.1] [--static dir] [--open]` | Start the local web UI + REST API (see [Web UI](web-ui.md)) |
 
 Global flags: `--json`, `-p/--project <name>`, `-g/--global`, `--all-projects`, `--db <path>`, `--config <path>`, `--verbose`.
 
