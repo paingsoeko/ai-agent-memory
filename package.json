@@ -1,7 +1,7 @@
 {
   "name": "ai-agent-memory",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Local-first, agent-agnostic memory layer for AI coding agents",
   "license": "MIT",
   "packageManager": "pnpm@12.4.2",
