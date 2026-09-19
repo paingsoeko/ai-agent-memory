@@ -1,10 +1,10 @@
 // A minimal custom agent on OpenRouter (or any OpenAI-compatible chat API) with shared memory.
 // Usage: OPENROUTER_API_KEY=... node agent.mjs "What database do we use for payroll?"
-import { createMemory } from "@local-ai-agent-memory/core";
+import { createMemory } from "@ai-agent-memory/core";
 import {
   buildSystemPromptWithMemory,
   ingestConversation,
-} from "@local-ai-agent-memory/adapter-openrouter";
+} from "@ai-agent-memory/adapter-openrouter";
 
 const userMessage =
   process.argv.slice(2).join(" ") || "Summarise what you know about this project.";

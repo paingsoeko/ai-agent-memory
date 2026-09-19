@@ -5,9 +5,9 @@
  */
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
-import { createMemory } from "@local-ai-agent-memory/core";
-import { runCli, type CliIO } from "@local-ai-agent-memory/cli";
-import { createMcpServer } from "@local-ai-agent-memory/mcp";
+import { createMemory } from "@ai-agent-memory/core";
+import { runCli, type CliIO } from "@ai-agent-memory/cli";
+import { createMcpServer } from "@ai-agent-memory/mcp";
 import { mkdtempSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";

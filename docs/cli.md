@@ -1,7 +1,7 @@
-# CLI (`@local-ai-agent-memory/cli`)
+# CLI (`@ai-agent-memory/cli`)
 
 ```bash
-npm install -g @local-ai-agent-memory/cli
+npm install -g @ai-agent-memory/cli
 aam --help
 ```
 

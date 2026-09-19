@@ -1,5 +1,5 @@
 {
-  "name": "@local-ai-agent-memory/adapter-opencode",
+  "name": "@ai-agent-memory/adapter-opencode",
   "version": "0.1.0",
   "description": "opencode integration helpers for @ai-memory (bootstrap instructions, hooks, config, context formatting)",
   "license": "MIT",
@@ -49,6 +49,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@local-ai-agent-memory/core": "workspace:^"
+    "@ai-agent-memory/core": "workspace:^"
   }
 }

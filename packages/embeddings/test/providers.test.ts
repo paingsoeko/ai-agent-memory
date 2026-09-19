@@ -1,4 +1,4 @@
-import { createMemory, getRegisteredEmbeddingProviders } from "@local-ai-agent-memory/core";
+import { createMemory, getRegisteredEmbeddingProviders } from "@ai-agent-memory/core";
 import { describe, expect, it } from "vitest";
 import {
   OllamaEmbeddingProvider,
@@ -16,7 +16,7 @@ const fakeFetch = (handler: (url: string, body: unknown) => unknown): typeof fet
     });
   }) as typeof fetch;
 
-describe("@local-ai-agent-memory/embeddings", () => {
+describe("@ai-agent-memory/embeddings", () => {
   it("registers providers into core on import", () => {
     const names = getRegisteredEmbeddingProviders();
     for (const n of ["openai", "openai-compatible", "openrouter", "ollama", "local", "hash"])

@@ -1,4 +1,4 @@
-import { MemoryError, type EmbeddingProvider } from "@local-ai-agent-memory/core";
+import { MemoryError, type EmbeddingProvider } from "@ai-agent-memory/core";
 
 export interface OpenAICompatibleOptions {
   /** Base URL of an OpenAI-compatible API, e.g. https://api.openai.com/v1 */

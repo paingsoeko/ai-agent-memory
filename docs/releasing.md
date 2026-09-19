@@ -39,8 +39,8 @@ git push origin main --follow-tags
 Watch the *Publish to npm* workflow. Verify:
 
 ```bash
-npm view @local-ai-agent-memory/core version
-npm view @local-ai-agent-memory/cli dist.tarball
+npm view @ai-agent-memory/core version
+npm view @ai-agent-memory/cli dist.tarball
 ```
 
 Rehearse without publishing: *Actions → Publish to npm → Run workflow* (dry-run defaults to true), or locally `pnpm release:dry-run`.

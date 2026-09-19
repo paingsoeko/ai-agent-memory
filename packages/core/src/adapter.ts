@@ -2,7 +2,7 @@ import { formatMemoriesForPrompt, type FormatOptions } from "./format.js";
 import type { Memory, MemoryResult } from "./types.js";
 
 /**
- * Contract implemented by `@local-ai-agent-memory/adapter-*` packages. Adapters never
+ * Contract implemented by `@ai-agent-memory/adapter-*` packages. Adapters never
  * store memory themselves: they only produce bootstrap instructions, hook
  * definitions, configuration snippets and context formatting for one agent.
  */
@@ -31,7 +31,7 @@ export interface BootstrapOptions {
 
 export interface McpConfigOptions {
   project?: string;
-  /** Command used to launch the server (default: npx -y @local-ai-agent-memory/mcp). */
+  /** Command used to launch the server (default: npx -y @ai-agent-memory/mcp). */
   command?: string;
   args?: string[];
   dbPath?: string;
@@ -57,7 +57,7 @@ export function defaultMcpCommand(options: McpConfigOptions = {}): {
   if (options.dbPath) env.AI_MEMORY_DB_PATH = options.dbPath;
   return {
     command: options.command ?? "npx",
-    args: options.args ?? ["-y", "@local-ai-agent-memory/mcp"],
+    args: options.args ?? ["-y", "@ai-agent-memory/mcp"],
     env,
   };
 }

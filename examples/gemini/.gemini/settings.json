@@ -2,7 +2,7 @@
   "mcpServers": {
     "ai-memory": {
       "command": "npx",
-      "args": ["-y", "@local-ai-agent-memory/mcp"],
+      "args": ["-y", "@ai-agent-memory/mcp"],
       "timeout": 30000,
       "trust": false
     }

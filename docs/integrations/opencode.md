@@ -8,14 +8,14 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "mcp": {
-    "ai-memory": { "type": "local", "command": ["npx", "-y", "@local-ai-agent-memory/mcp"], "enabled": true }
+    "ai-memory": { "type": "local", "command": ["npx", "-y", "@ai-agent-memory/mcp"], "enabled": true }
   }
 }
 ```
 
 ## Instructions
 
-Append `opencodeAdapter.bootstrapInstructions()` (from `@local-ai-agent-memory/adapter-opencode`) to `AGENTS.md`.
+Append `opencodeAdapter.bootstrapInstructions()` (from `@ai-agent-memory/adapter-opencode`) to `AGENTS.md`.
 
 ## Plugin for automatic ingestion
 

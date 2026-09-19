@@ -5,7 +5,7 @@ import {
   type MemoryEngine,
   type MemoryScope,
   type MemoryStatus,
-} from "@local-ai-agent-memory/core";
+} from "@ai-agent-memory/core";
 import { z } from "zod";
 
 export const MCP_SERVER_NAME = "ai-memory";

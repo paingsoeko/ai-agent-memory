@@ -1,5 +1,5 @@
 {
-  "name": "@local-ai-agent-memory/cli",
+  "name": "@ai-agent-memory/cli",
   "version": "0.1.0",
   "description": "Command-line interface (aam) for @ai-memory: init, remember, recall, search, inspect, export/import",
   "license": "MIT",
@@ -52,7 +52,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@local-ai-agent-memory/core": "workspace:^",
-    "@local-ai-agent-memory/embeddings": "workspace:^"
+    "@ai-agent-memory/core": "workspace:^",
+    "@ai-agent-memory/embeddings": "workspace:^"
   }
 }

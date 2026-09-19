@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { createMemory } from "@local-ai-agent-memory/core";
-import "@local-ai-agent-memory/embeddings";
+import { createMemory } from "@ai-agent-memory/core";
+import "@ai-agent-memory/embeddings";
 import { createMcpServer } from "./server.js";
 
 function arg(name: string): string | undefined {

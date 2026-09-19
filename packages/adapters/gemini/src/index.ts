@@ -6,7 +6,7 @@ import {
   type BootstrapOptions,
   type ConfigSnippet,
   type McpConfigOptions,
-} from "@local-ai-agent-memory/core";
+} from "@ai-agent-memory/core";
 
 /**
  * Gemini CLI integration: `~/.gemini/settings.json` (or project `.gemini/settings.json`)

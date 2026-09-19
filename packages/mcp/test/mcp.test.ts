@@ -1,6 +1,6 @@
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
-import { createMemory, type MemoryEngine } from "@local-ai-agent-memory/core";
+import { createMemory, type MemoryEngine } from "@ai-agent-memory/core";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { createMcpServer } from "../src/index.js";
 
@@ -37,7 +37,7 @@ afterEach(async () => {
   await engine.close();
 });
 
-describe("@local-ai-agent-memory/mcp", () => {
+describe("@ai-agent-memory/mcp", () => {
   it("lists all memory tools", async () => {
     const { tools } = await client.listTools();
     const names = tools.map((t) => t.name).sort();

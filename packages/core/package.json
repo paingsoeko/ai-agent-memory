@@ -1,5 +1,5 @@
 {
-  "name": "@local-ai-agent-memory/core",
+  "name": "@ai-agent-memory/core",
   "version": "0.1.0",
   "description": "Local-first, agent-agnostic memory engine for AI coding agents (SQLite + FTS5 + optional embeddings)",
   "license": "MIT",

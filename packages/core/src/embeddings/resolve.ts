@@ -17,7 +17,7 @@ registerEmbeddingProvider(
 /**
  * Resolve a provider by name. Built-ins: "none" (null) and "hash".
  * Other names are looked up in the registry; if missing, we try to load
- * `@local-ai-agent-memory/embeddings` (which registers "local", "ollama", "openai", ...).
+ * `@ai-agent-memory/embeddings` (which registers "local", "ollama", "openai", ...).
  */
 export async function resolveEmbeddingProvider(
   config: EmbeddingProviderConfig,
@@ -28,7 +28,7 @@ export async function resolveEmbeddingProvider(
   if (!factory) {
     try {
       // Optional companion package; registers additional providers on import.
-      await import("@local-ai-agent-memory/embeddings" as string);
+      await import("@ai-agent-memory/embeddings" as string);
     } catch {
       /* not installed */
     }
@@ -38,7 +38,7 @@ export async function resolveEmbeddingProvider(
     throw new MemoryError(
       "EMBEDDINGS",
       `Unknown embedding provider "${config.provider}". Registered: ${getRegisteredEmbeddingProviders().join(", ") || "none"}.`,
-      'Install @local-ai-agent-memory/embeddings for "local", "ollama" and "openai", or set embeddings.provider to "hash" / "none".',
+      'Install @ai-agent-memory/embeddings for "local", "ollama" and "openai", or set embeddings.provider to "hash" / "none".',
     );
   }
   return factory(config);
