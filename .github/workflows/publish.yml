@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
     inputs:
       dry-run:
-        description: "Run every step but publish with --dry-run"
+        description: "Run every step but publish with --dry-run (untick to really publish)"
         type: boolean
         default: true
 
@@ -73,9 +73,14 @@ jobs:
         run: pnpm -r --filter './packages/**' exec npm pack --dry-run
 
       - name: Publish (skips versions that already exist on npm)
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.dry-run == false)
+        env:
+          # verbose so the OIDC token exchange result ("oidc ...") is visible in the log
+          NPM_CONFIG_LOGLEVEL: verbose
         run: node scripts/release/publish.mjs
 
       - name: Publish dry-run (manual trigger)
-        if: github.event_name == 'workflow_dispatch'
+        if: github.event_name == 'workflow_dispatch' && inputs.dry-run != false
+        env:
+          NPM_CONFIG_LOGLEVEL: verbose
         run: node scripts/release/publish.mjs --dry-run
