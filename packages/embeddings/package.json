@@ -1,6 +1,6 @@
 {
   "name": "@ai-agent-memory/embeddings",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Embedding providers for @ai-memory (OpenAI-compatible APIs, Ollama, transformers.js)",
   "license": "MIT",
   "author": "paingsoeko",
