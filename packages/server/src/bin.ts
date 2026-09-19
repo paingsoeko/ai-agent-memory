@@ -1,9 +1,6 @@
 #!/usr/bin/env node
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
-import { startServer } from "./index.js";
+import { defaultStaticDir, startServer } from "./index.js";
 
-const here = dirname(fileURLToPath(import.meta.url));
 const args = process.argv.slice(2);
 const get = (flag: string, fallback?: string) => {
   const i = args.indexOf(flag);
@@ -17,9 +14,8 @@ const port = Number(get("--port", process.env.AI_MEMORY_PORT ?? "4123"));
 const host = get("--host", process.env.AI_MEMORY_HOST ?? "127.0.0.1")!;
 const db = get("--db", process.env.AI_MEMORY_DB_PATH);
 const project = get("--project", process.env.AI_MEMORY_PROJECT);
-// Prefer the bundled web UI (packages/web/dist) when present.
-const staticDir =
-  get("--static", process.env.AI_MEMORY_STATIC) ?? join(here, "..", "..", "web", "dist");
+// Prefer the bundled web UI (@ai-agent-memory/web dist) when present.
+const staticDir = get("--static", process.env.AI_MEMORY_STATIC) ?? defaultStaticDir() ?? undefined;
 
 await startServer({
   port: Number.isFinite(port) ? port : 4123,

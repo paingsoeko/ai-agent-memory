@@ -285,6 +285,9 @@ importers:
       '@ai-agent-memory/embeddings':
         specifier: workspace:^
         version: link:../embeddings
+      '@ai-agent-memory/web':
+        specifier: workspace:^
+        version: link:../web
 
   packages/web:
     dependencies:

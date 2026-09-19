@@ -839,20 +839,19 @@ export async function runCli(argv: string[], io: CliIO = defaultIO()): Promise<n
         return 0;
       }
       case "serve": {
-        const { startServer } = await import("@ai-agent-memory/server");
+        const { startServer, defaultStaticDir } = await import("@ai-agent-memory/server");
         const port = num(v.port, "port") ?? 4123;
         const host = v.host ?? "127.0.0.1";
+        const { existsSync: exists } = await import("node:fs");
         const candidates = [
           v.static ? resolve(io.cwd, v.static) : null,
-          // Monorepo layout: packages/cli/dist -> ../../web/dist
-          new URL("../../web/dist/index.html", import.meta.url).pathname.replace(
-            /\/index\.html$/,
-            "",
-          ),
-          // Installed layout: node_modules/@ai-agent-memory/web/dist
+          // Resolved from the server package itself: works in the monorepo
+          // (packages/server/dist -> ../../web/dist) and in npm installs
+          // (node_modules/@ai-agent-memory/server/dist -> ../../web/dist).
+          defaultStaticDir(),
+          // Installed layout relative to the current directory.
           resolve(io.cwd, "node_modules/@ai-agent-memory/web/dist"),
         ].filter(Boolean) as string[];
-        const { existsSync: exists } = await import("node:fs");
         const staticDir = candidates.find((c) => exists(join(c, "index.html")));
         const srv = await startServer({
           port,

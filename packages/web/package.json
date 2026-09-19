@@ -1,15 +1,43 @@
 {
   "name": "@ai-agent-memory/web",
   "version": "0.2.0",
-  "private": true,
-  "description": "Local-first AI Agent Memory \u2014 inspection and management dashboard",
+  "description": "Local-first AI Agent Memory — inspection and management dashboard",
   "license": "MIT",
+  "author": "paingsoeko",
+  "homepage": "https://github.com/paingsoeko/ai-agent-memory/tree/main/packages/web#readme",
+  "bugs": {
+    "url": "https://github.com/paingsoeko/ai-agent-memory/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/paingsoeko/ai-agent-memory.git",
+    "directory": "packages/web"
+  },
+  "keywords": [
+    "ai",
+    "memory",
+    "agents",
+    "dashboard",
+    "local-first"
+  ],
   "type": "module",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "sideEffects": false,
   "scripts": {
     "dev": "vite",
     "build": "tsc -p tsconfig.json && vite build",
     "preview": "vite preview --port 4124",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepack": "npm run build"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "dependencies": {
     "lucide-react": "^0.469.0",
