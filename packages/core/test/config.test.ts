@@ -60,7 +60,7 @@ describe("config", () => {
   });
 
   it("expands ~ and rejects invalid config", () => {
-    expect(expandHome("~/x", "/home/u")).toBe("/home/u/x");
+    expect(expandHome("~/x", "/home/u")).toBe(join("/home/u", "x"));
     expect(() =>
       loadConfig({ skipFiles: true, overrides: { memory: { defaultScope: "nope" as "user" } } }),
     ).toThrow(/defaultScope/);
