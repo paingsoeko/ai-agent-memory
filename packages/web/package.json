@@ -1,8 +1,8 @@
 {
   "name": "@ai-agent-memory/web",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "private": true,
-  "description": "Local-first AI Agent Memory — inspection and management dashboard",
+  "description": "Local-first AI Agent Memory \u2014 inspection and management dashboard",
   "license": "MIT",
   "type": "module",
   "scripts": {

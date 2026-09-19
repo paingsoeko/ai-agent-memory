@@ -9,6 +9,7 @@ export const ROOT = resolve(fileURLToPath(new URL("../..", import.meta.url)));
 export const PACKAGE_DIRS = [
   "packages/core",
   "packages/embeddings",
+  "packages/server",
   "packages/cli",
   "packages/mcp",
   "packages/adapters/claude",

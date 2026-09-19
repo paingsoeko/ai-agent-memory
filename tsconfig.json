@@ -12,6 +12,7 @@
       "@ai-agent-memory/embeddings": ["packages/embeddings/src/index.ts"],
       "@ai-agent-memory/cli": ["packages/cli/src/index.ts"],
       "@ai-agent-memory/mcp": ["packages/mcp/src/index.ts"],
+      "@ai-agent-memory/server": ["packages/server/src/index.ts"],
       "@ai-agent-memory/adapter-claude": ["packages/adapters/claude/src/index.ts"],
       "@ai-agent-memory/adapter-codex": ["packages/adapters/codex/src/index.ts"],
       "@ai-agent-memory/adapter-gemini": ["packages/adapters/gemini/src/index.ts"],
@@ -26,5 +27,8 @@
     "packages/adapters/*/test/**/*.ts",
     "tests/**/*.ts",
     "vitest.config.ts"
-  ]
+  ],
+  // packages/web has its own tsconfig (Bundler resolution + DOM lib) and is
+  // typechecked via `pnpm --filter @ai-agent-memory/web typecheck`.
+  "exclude": ["node_modules", "**/dist/**", "packages/web"]
 }

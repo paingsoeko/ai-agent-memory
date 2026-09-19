@@ -10,6 +10,7 @@ export default defineConfig({
       "@ai-agent-memory/embeddings": r("./packages/embeddings/src/index.ts"),
       "@ai-agent-memory/cli": r("./packages/cli/src/index.ts"),
       "@ai-agent-memory/mcp": r("./packages/mcp/src/index.ts"),
+      "@ai-agent-memory/server": r("./packages/server/src/index.ts"),
       "@ai-agent-memory/adapter-claude": r("./packages/adapters/claude/src/index.ts"),
       "@ai-agent-memory/adapter-codex": r("./packages/adapters/codex/src/index.ts"),
       "@ai-agent-memory/adapter-gemini": r("./packages/adapters/gemini/src/index.ts"),
