@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.2
+
+- Rewrite the README for clarity: new core-concepts section, grouped CLI usage, embedding provider table.
+- Fix the CLI command name in the packages table (`aam`, not `ai-memory`).
+
 ## 0.1.0
 
 Initial release.

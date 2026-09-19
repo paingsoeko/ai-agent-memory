@@ -2,29 +2,34 @@
 
 **A local-first, agent-agnostic memory layer for AI coding agents.**
 
+Give Claude Code, Codex, Gemini CLI, OpenCode and your own agents one shared, long-term memory that lives on your machine.
+
 ```text
 Claude Code ─┐
 Codex ───────┤
-Gemini CLI ──┤
-OpenCode ────┤──→  ai-memory  ──→  local SQLite (FTS5 + optional embeddings)
-OpenRouter ──┤
-Custom ──────┘
+Gemini CLI ──┼──→  ai-memory  ──→  ~/.ai-memory/memory.db  (SQLite, FTS5, optional embeddings)
+OpenCode ────┤
+Your agent ──┘
 ```
 
-One memory. Any agent. Your machine. No vendor lock-in.
+A fact remembered by one agent is recalled by all the others.
 
-- **Local-first.** Everything lives in a single SQLite file (`~/.ai-memory/memory.db`). No cloud, no account, no API key, no telemetry.
-- **Agent-agnostic.** The engine has zero agent- or vendor-specific code. Agents connect over [MCP](docs/mcp.md), the CLI (`--json`), or the TypeScript API.
-- **Layered memory.** Raw events (L0) → atomic memories (L1) → scenes (L2) → core memories (L3), with full provenance at every step.
-- **Conservative by default.** Paraphrases are merged, conflicting facts are superseded (never silently overwritten), and automatic ingestion prefers *not remembering* over remembering noise.
-- **Zero runtime dependencies** in the core: it uses Node's built-in `node:sqlite` (Node ≥ 22.13).
+## Why ai-memory
+
+- **Local-first.** One SQLite file. No cloud, no account, no API key, no telemetry.
+- **Agent-agnostic.** The engine has no vendor-specific code. Agents connect over [MCP](docs/mcp.md), the CLI, or the TypeScript API.
+- **Per-project isolation.** Memories belong to a project by default. Personal preferences can be global.
+- **Conservative.** Duplicates are merged, conflicting facts are superseded rather than overwritten, and automatic ingestion prefers to store nothing over storing noise.
+- **Traceable.** Every memory keeps its provenance: which conversation it came from, what it replaced, and its full history.
+- **No runtime dependencies.** The core uses Node's built-in `node:sqlite`.
+
+Requires Node.js 22.13 or newer.
 
 ## Quick start
 
 ```bash
-npm install -g @ai-agent-memory/cli
-
-aam init
+npm install -g @ai-agent-memory/cli   # installs the `aam` command
+aam init                              # creates ~/.ai-memory/memory.db
 aam remember "I prefer PostgreSQL for backend projects."
 aam recall "database preference"
 ```
@@ -33,124 +38,127 @@ aam recall "database preference"
 0.734  3f9c1a2e  [preference | user]  I prefer PostgreSQL for backend projects.
 ```
 
-## How to use
+Then connect an agent (see [Connect your agents](#connect-your-agents)).
 
-### 1. Install and initialise
+## Core concepts
 
-```bash
-npm install -g @ai-agent-memory/cli     # gives you the `aam` command
-aam init                          # creates ~/.ai-memory/memory.db and ~/.config/ai-memory/config.json
-aam status                        # database stats, active project, config sources
-```
+**Memory layers.** Knowledge moves up through four layers, and every step keeps a link back to where it came from.
 
-Requires Node.js 22.13 or newer. Nothing is sent anywhere: `aam privacy` shows the posture.
+| Layer | Name | What it holds |
+| --- | --- | --- |
+| L0 | Raw events | Conversation messages as they happened |
+| L1 | Atomic memories | Single facts, preferences, decisions |
+| L2 | Scenes | Groups of related memories on one topic |
+| L3 | Core memories | The most important, frequently used knowledge |
 
-### 2. Pick a project
+**Scopes.** Memories are stored at a scope: `global`, `user`, `project`, `workspace` or `session`. Recall prefers the current project and never leaks another project's memories unless you ask for all projects.
 
-Memories are isolated per project. Inside a repository run:
+**Types.** Each memory has a type that helps ranking and filtering: `fact` (default), `preference`, `decision`, `architecture`, `convention`, `pattern`, `bug_fix`, `lesson`, `task`, `constraint`, `persona`, `project_context`, `summary`, or any custom string.
+
+**Conflicts.** Remembering "Database = PostgreSQL" after "Database = MySQL" marks the old memory as superseded. Both stay inspectable.
+
+More detail: [Memory model](docs/memory-model.md) · [Retrieval](docs/retrieval.md) · [Architecture](docs/architecture.md)
+
+## Using the CLI
+
+### Projects
+
+Inside a repository, memories are scoped to that project automatically (by git root folder name). To name it explicitly:
 
 ```bash
 cd ~/code/my-app
-aam project use my-app            # writes .ai-memory.json in this directory
-aam project current               # -> my-app
+aam project use my-app     # writes .ai-memory.json in this directory
+aam project current        # -> my-app
 ```
 
-Without `project use`, the git root folder name is used automatically. Memories stored with `--global` (or `--scope user`) are visible in every project, which is where personal preferences belong.
+Use `--global` for things that apply everywhere, such as personal preferences.
 
-### 3. Remember things
+### Remember
 
 ```bash
 aam remember "Data processing uses Temporal workflows." -t architecture --importance 0.9
 aam remember "Always run pnpm lint before committing." -t convention
 aam remember "I prefer PostgreSQL for backend projects." -t preference --global
-aam remember "Database = MySQL" -t architecture
-aam remember "Database = PostgreSQL" -t architecture     # -> supersedes the MySQL memory, both kept
-aam remember "Payroll uses Temporal."                       # -> merged into the existing Temporal memory
 ```
 
-Types: `fact` (default), `preference`, `decision`, `architecture`, `convention`, `pattern`, `bug_fix`, `lesson`, `task`, `constraint`, `persona`, `project_context`, `summary`, or any custom string. Useful flags: `--tags a,b`, `--scene "Payroll Architecture"`, `--ttl 7d` (short-term), `--sensitive` (never sent to a network embedding provider), `--force` (skip dedup).
+Useful flags: `--tags a,b`, `--scene "Payroll"`, `--ttl 7d` (short-term), `--sensitive` (never sent to a network embedding provider), `--force` (skip deduplication).
 
-### 4. Recall and search
+### Recall and search
 
 ```bash
-aam recall "how does data processing work?"      # ranked for a task, records access
-aam recall "payroll" --core --verbose               # include core memories, show why each ranked
-aam search "trace propagation" -t architecture      # pure relevance, no side effects
-aam list --level core                               # everything promoted to core
-aam list --status superseded                        # history of replaced facts
+aam recall "how does data processing work?"   # ranked for a task, records access
+aam recall "payroll" --core --verbose         # include core memories, explain ranking
+aam search "trace propagation" -t architecture   # pure relevance, no side effects
+aam list --level core                         # everything promoted to core
+aam list --status superseded                  # history of replaced facts
 ```
 
-`recall` ranks by relevance, importance, confidence, recency, access frequency and project match. Memories from the current project outrank global ones.
+Ranking combines relevance, importance, confidence, recency, access frequency and project match.
 
-### 5. Inspect, edit, forget
+### Inspect, edit, forget
 
 ```bash
-aam inspect 3f9c1a2e            # provenance (raw events), scenes, supersedes links, related, history
+aam inspect 3f9c1a2e     # provenance, scenes, supersedes links, history
 aam update 3f9c1a2e --importance 0.95 --tags db,infra
-aam promote 3f9c1a2e            # force to core (L3)
-aam forget 3f9c1a2e             # delete (raw events are kept); add --archive to hide instead
-aam scene list                  # topic groups (L2)
+aam promote 3f9c1a2e     # force to core (L3)
+aam forget 3f9c1a2e      # delete (raw events kept); --archive hides instead
+aam scene list           # topic groups (L2)
 ```
 
-Ids can be abbreviated to any unique prefix.
+IDs can be shortened to any unique prefix.
 
-### 6. Connect your agents
-
-Every agent talks to the same database over MCP:
+### Maintenance
 
 ```bash
-claude mcp add ai-memory -- npx -y @ai-agent-memory/mcp       # Claude Code
-codex mcp add ai-memory -- npx -y @ai-agent-memory/mcp        # Codex
-aam mcp                                                 # snippets for Gemini CLI, OpenCode, generic JSON
+aam consolidate          # expire, promote/demote, cluster scenes, backfill embeddings
+aam export ./memory.json # portable backup (--embeddings to include vectors)
+aam import ./memory.json # merge into another machine's database
+aam status               # database stats, active project, config sources
+aam privacy              # what is stored where, and what leaves the machine (nothing by default)
 ```
 
-Then paste the bootstrap text into `CLAUDE.md` / `AGENTS.md` / `GEMINI.md` so the agent knows to call `memory_recall` at the start of a task and `memory_remember` only for durable knowledge (ready-made copies are in [`examples/`](examples)). A fact remembered by Claude Code is recalled by Codex, Gemini CLI, OpenCode and your own scripts.
+### Scripting
 
-### 7. Automatic memory (optional)
-
-Let agents feed conversations in; raw events are stored and durable knowledge is extracted conservatively:
-
-```bash
-# Claude Code Stop hook (.claude/settings.json) — reads the transcript path from the hook payload
-aam ingest --from-hook --agent claude --json
-
-# Codex (~/.codex/config.toml)
-notify = ["aam", "ingest", "--from-hook", "--agent", "codex", "--json"]
-
-# Any tool: pipe JSON / JSONL messages
-echo '[{"role":"user","content":"We decided to use Temporal for payroll."}]' | aam ingest --agent my-bot
-```
-
-Chatter, questions, tool output and anything that looks like a secret are never stored as memories.
-
-### 8. Use from scripts (`--json`)
-
-Every command accepts `--json` and prints stable JSON on stdout, errors on stderr with exit codes `1` (error), `2` (usage), `3` (not found):
+Every command accepts `--json` and prints stable JSON on stdout. Errors go to stderr. Exit codes: `1` error, `2` usage, `3` not found.
 
 ```bash
 aam recall "Temporal" --json | jq '.[0].memory.content'
 ```
 
-### 9. Maintenance
+Full reference: [docs/cli.md](docs/cli.md)
+
+## Connect your agents
+
+All agents talk to the same database through the MCP server.
 
 ```bash
-aam consolidate            # archive expired, promote/demote, cluster scenes, backfill embeddings
-aam export ./memory.json   # portable backup (add --embeddings to include vectors)
-aam import ./memory.json   # merge into another machine's database
-aam config                 # effective configuration and where each value came from
+claude mcp add ai-memory -- npx -y @ai-agent-memory/mcp   # Claude Code
+codex mcp add ai-memory -- npx -y @ai-agent-memory/mcp    # Codex
+aam mcp                                                   # snippets for Gemini CLI, OpenCode, generic JSON
 ```
 
-### 10. Optional semantic search
+The server exposes `memory_recall`, `memory_remember`, `memory_search`, `memory_update`, `memory_forget`, `memory_inspect`, `memory_list`, `memory_ingest` and `memory_status`.
 
-Keyword search (FTS5) is always on. To add embeddings, edit `~/.config/ai-memory/config.json`:
+Then add a short bootstrap note to your `CLAUDE.md`, `AGENTS.md` or `GEMINI.md` so the agent recalls at the start of a task and remembers only durable knowledge. Ready-made copies live in [`examples/`](examples).
 
-```json
-{ "embeddings": { "provider": "hash" } }
+Per-agent guides: [Claude Code](docs/integrations/claude-code.md) · [Codex](docs/integrations/codex.md) · [Gemini CLI](docs/integrations/gemini-cli.md) · [OpenCode](docs/integrations/opencode.md) · [OpenRouter](docs/integrations/openrouter.md) · [Custom agents](docs/integrations/custom-agents.md)
+
+### Automatic memory (optional)
+
+Instead of relying on the agent to call `memory_remember`, feed whole conversations in. Raw events are stored and durable knowledge is extracted conservatively. Chatter, questions, tool output and anything that looks like a secret are never stored as memories.
+
+```bash
+# Claude Code Stop hook (.claude/settings.json)
+aam ingest --from-hook --agent claude --json
+
+# Codex (~/.codex/config.toml)
+notify = ["aam", "ingest", "--from-hook", "--agent", "codex", "--json"]
+
+# Any tool: pipe JSON or JSONL messages
+echo '[{"role":"user","content":"We decided to use Temporal for payroll."}]' | aam ingest --agent my-bot
 ```
 
-`hash` is local and dependency-free. For neural embeddings install `@ai-agent-memory/embeddings` and use `"local"` (transformers.js, in-process), `"ollama"`, or `"openai"`; network providers additionally require `"privacy": { "allowNetworkEmbeddings": true }`. Run `aam embed` once to backfill. See [docs/configuration.md](docs/configuration.md).
-
-## Programmatic API
+## Using the TypeScript API
 
 ```bash
 npm install @ai-agent-memory/core
@@ -171,46 +179,60 @@ const results = await memory.recall({ query: "How does data processing work?", l
 for (const r of results) console.log(r.score, r.memory.content, r.explanation);
 
 await memory.inspect(results[0].memory.id); // provenance, scenes, supersedes, history
-await memory.close();
-```
 
-Automatic mode: hand the engine a conversation and it stores raw events, extracts durable knowledge, deduplicates, detects conflicts and links provenance:
-
-```ts
+// Automatic mode: store raw events, extract knowledge, dedupe, detect conflicts
 await memory.ingest({
   sessionId,
   agent: "claude",
   messages: [{ role: "user", content: "We decided to use Temporal for data processing." }],
 });
+
+await memory.close();
 ```
 
-See [docs/api.md](docs/api.md) for the full API.
+Full reference: [docs/api.md](docs/api.md)
+
+## Optional semantic search
+
+Keyword search (SQLite FTS5) is always on. To add vector search, set an embedding provider in `~/.config/ai-memory/config.json`:
+
+```json
+{ "embeddings": { "provider": "hash" } }
+```
+
+| Provider | Needs | Leaves the machine |
+| --- | --- | --- |
+| `hash` | Nothing | No |
+| `local` | `@ai-agent-memory/embeddings` (transformers.js, in-process) | No |
+| `ollama` | `@ai-agent-memory/embeddings` + a running Ollama | No |
+| `openai` | `@ai-agent-memory/embeddings` + an API key | Yes |
+
+Network providers also require `"privacy": { "allowNetworkEmbeddings": true }`. Run `aam embed` once to backfill existing memories. See [docs/configuration.md](docs/configuration.md).
 
 ## Packages
 
 | Package | What it is |
 | --- | --- |
-| [`@ai-agent-memory/core`](packages/core) | Memory engine, types, `MemoryStore` interface, SQLite store, hybrid search, lifecycle, ingestion |
-| [`@ai-agent-memory/cli`](packages/cli) | `ai-memory` command-line tool (`--json` for agents) |
-| [`@ai-agent-memory/mcp`](packages/mcp) | MCP server exposing `memory_search`, `memory_recall`, `memory_remember`, `memory_update`, `memory_forget`, `memory_inspect`, `memory_list`, `memory_ingest`, `memory_status` |
+| [`@ai-agent-memory/core`](packages/core) | Memory engine: types, `MemoryStore` interface, SQLite store, hybrid search, lifecycle, ingestion |
+| [`@ai-agent-memory/cli`](packages/cli) | The `aam` command-line tool |
+| [`@ai-agent-memory/mcp`](packages/mcp) | MCP server exposing the memory tools |
 | [`@ai-agent-memory/embeddings`](packages/embeddings) | Optional embedding providers: OpenAI-compatible APIs, OpenRouter, Ollama, transformers.js |
-| [`@ai-agent-memory/adapter-claude`](packages/adapters/claude), [`-codex`](packages/adapters/codex), [`-gemini`](packages/adapters/gemini), [`-opencode`](packages/adapters/opencode), [`-openrouter`](packages/adapters/openrouter) | Bootstrap instructions, hooks, config snippets and context formatting per agent (no storage logic) |
+| `@ai-agent-memory/adapter-*` | Bootstrap text, hooks and config snippets per agent ([claude](packages/adapters/claude), [codex](packages/adapters/codex), [gemini](packages/adapters/gemini), [opencode](packages/adapters/opencode), [openrouter](packages/adapters/openrouter)). No storage logic. |
 
 ## How it works
 
 ```text
-Raw event ─→ Extraction ─→ Atomic memory ─→ Dedup ─→ Scoring ─→ Scene clustering ─→ Promotion ─→ Core memory
+Raw event → Extraction → Atomic memory → Dedup → Scoring → Scene clustering → Promotion → Core memory
 ```
 
-- **Search** is hybrid: SQLite FTS5 keyword search (always on) plus optional vector search, fused with Reciprocal Rank Fusion and re-ranked by importance, confidence, recency, access frequency, scope and project match. [docs/retrieval.md](docs/retrieval.md)
-- **Scopes** are hierarchical (`global → user → project → workspace → session`). A project's memories never leak into another project unless you pass `allProjects`. [docs/memory-model.md](docs/memory-model.md)
-- **Conflicts** are tracked with `status`, `supersedes` and `supersededBy`, so "Database = MySQL" becomes superseded when you later remember "Database = PostgreSQL" — and both remain inspectable. 
-- **Provenance**: `aam inspect <id>` shows the raw events a memory was derived from, its scenes, what it supersedes, related memories and its full lifecycle history.
-- **Privacy**: `aam privacy` shows the posture (storage local, telemetry disabled, network disabled unless you opt into a network embedding provider). [docs/security-privacy.md](docs/security-privacy.md)
+- **Search** fuses FTS5 keyword results with optional vector results using Reciprocal Rank Fusion, then re-ranks by importance, confidence, recency, access frequency, scope and project match.
+- **Lifecycle** runs on `aam consolidate`: expired memories are archived, strong ones are promoted to core, weak ones demoted, and related memories are clustered into scenes.
+- **Privacy** is local by default. Nothing leaves the machine unless you opt into a network embedding provider. See [docs/security-privacy.md](docs/security-privacy.md).
 
 ## Documentation
 
-- [Architecture](docs/architecture.md) · [Memory model](docs/memory-model.md) · [Retrieval](docs/retrieval.md) · [MCP server](docs/mcp.md) · [API](docs/api.md) · [CLI](docs/cli.md) · [Configuration](docs/configuration.md) · [Security & privacy](docs/security-privacy.md)
+- Concepts: [Architecture](docs/architecture.md) · [Memory model](docs/memory-model.md) · [Retrieval](docs/retrieval.md) · [Security & privacy](docs/security-privacy.md)
+- Reference: [CLI](docs/cli.md) · [API](docs/api.md) · [MCP server](docs/mcp.md) · [Configuration](docs/configuration.md)
 - Integrations: [Claude Code](docs/integrations/claude-code.md) · [Codex](docs/integrations/codex.md) · [Gemini CLI](docs/integrations/gemini-cli.md) · [OpenCode](docs/integrations/opencode.md) · [OpenRouter](docs/integrations/openrouter.md) · [Custom agents](docs/integrations/custom-agents.md)
 - Examples: [`examples/`](examples)
 
@@ -218,12 +240,12 @@ Raw event ─→ Extraction ─→ Atomic memory ─→ Dedup ─→ Scoring ─
 
 ```bash
 corepack pnpm install
-pnpm verify          # lint + format check + build + tests
-pnpm smoke           # runs the built CLI + MCP server in a clean temp HOME
+pnpm verify    # lint + format check + build + tests
+pnpm smoke     # runs the built CLI and MCP server in a clean temp HOME
 ```
 
-Requirements: Node.js ≥ 22.13 (LTS 22 or 24), pnpm 12.
+Requires Node.js 22.13 or newer and pnpm 12. See [CONTRIBUTING.md](CONTRIBUTING.md) and [docs/releasing.md](docs/releasing.md).
 
 ## License
 
-MIT
+[MIT](LICENSE)
