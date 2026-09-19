@@ -11,4 +11,4 @@ const results = await memory.recall({ query: "policy database design", limit: 10
 await memory.inspect(results[0].memory.id);
 ```
 
-Requires Node.js ≥ 22.13. Full documentation: https://github.com/ai-memory/ai-memory
+Requires Node.js ≥ 22.13. Full documentation: https://github.com/paingsoeko/ai-agent-memory

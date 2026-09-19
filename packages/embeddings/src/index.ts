@@ -50,7 +50,7 @@ export function registerEmbeddingProviders(): void {
         dimensions: c.dimensions,
         batchSize: c.batchSize,
         headers: {
-          "HTTP-Referer": "https://github.com/ai-memory/ai-memory",
+          "HTTP-Referer": "https://github.com/paingsoeko/ai-agent-memory",
           "X-Title": "ai-memory",
         },
       }),

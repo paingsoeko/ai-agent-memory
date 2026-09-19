@@ -26,7 +26,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ai-memory/ai-memory.git",
+    "url": "https://github.com/paingsoeko/ai-agent-memory.git",
     "directory": "packages/adapters/gemini"
   },
   "keywords": [

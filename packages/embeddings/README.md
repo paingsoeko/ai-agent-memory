@@ -4,4 +4,4 @@ Optional embedding providers for ai-memory. Importing this package registers `op
 
 Network providers require `privacy.allowNetworkEmbeddings = true`; sensitive memories are never sent. `local` needs the optional `@huggingface/transformers` package and runs fully in-process.
 
-Docs: https://github.com/ai-memory/ai-memory/blob/main/docs/configuration.md
+Docs: https://github.com/paingsoeko/ai-agent-memory/blob/main/docs/configuration.md

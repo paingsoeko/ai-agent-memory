@@ -7,4 +7,4 @@ npx -y @ai-memory/mcp
 claude mcp add ai-memory -- npx -y @ai-memory/mcp
 ```
 
-No cloud dependency: it opens the same SQLite file as the CLI. Docs: https://github.com/ai-memory/ai-memory/blob/main/docs/mcp.md
+No cloud dependency: it opens the same SQLite file as the CLI. Docs: https://github.com/paingsoeko/ai-agent-memory/blob/main/docs/mcp.md
