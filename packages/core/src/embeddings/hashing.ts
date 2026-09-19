@@ -15,7 +15,7 @@ function fnv1a(str: string, seed = 0x811c9dc5): number {
  * feature vector (stemmed terms, term bigrams, character trigrams) projected
  * into a fixed-size space, then L2-normalised. It gives useful fuzzy matching
  * with zero dependencies and zero network, but it is NOT a neural semantic
- * model: use `@ai-memory/embeddings` (transformers.js / Ollama / API) for that.
+ * model: use `@ai-agent-memory/embeddings` (transformers.js / Ollama / API) for that.
  */
 export class HashingEmbeddingProvider implements EmbeddingProvider {
   readonly name = "hash";

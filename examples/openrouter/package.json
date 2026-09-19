@@ -7,7 +7,7 @@
     "start": "node agent.mjs"
   },
   "dependencies": {
-    "@ai-memory/core": "workspace:^",
-    "@ai-memory/adapter-openrouter": "workspace:^"
+    "@ai-agent-memory/core": "workspace:^",
+    "@ai-agent-memory/adapter-openrouter": "workspace:^"
   }
 }

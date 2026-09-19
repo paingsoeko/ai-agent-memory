@@ -7,6 +7,6 @@
     "start": "node index.mjs"
   },
   "dependencies": {
-    "@ai-memory/core": "workspace:^"
+    "@ai-agent-memory/core": "workspace:^"
   }
 }

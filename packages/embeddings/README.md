@@ -1,4 +1,4 @@
-# @ai-memory/embeddings
+# @ai-agent-memory/embeddings
 
 Optional embedding providers for ai-memory. Importing this package registers `openai`, `openai-compatible`, `openrouter`, `ollama`, `local`/`transformers` by name; the built-in `hash` provider in core needs nothing.
 

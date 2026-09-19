@@ -14,8 +14,8 @@ import {
   type MemoryEngine,
   type MemoryScope,
   type MemoryStatus,
-} from "@ai-memory/core";
-import "@ai-memory/embeddings";
+} from "@ai-agent-memory/core";
+import "@ai-agent-memory/embeddings";
 import {
   formatEvent,
   formatInspection,
@@ -730,7 +730,7 @@ export async function runCli(argv: string[], io: CliIO = defaultIO()): Promise<n
           throw new MemoryError(
             "EMBEDDINGS",
             "No embedding provider configured.",
-            'Set embeddings.provider to "hash" (local) or install @ai-memory/embeddings for more.',
+            'Set embeddings.provider to "hash" (local) or install @ai-agent-memory/embeddings for more.',
           );
         const n = await engine.embedPending(num(v.limit, "limit") ?? 10_000);
         out(
@@ -810,7 +810,7 @@ export async function runCli(argv: string[], io: CliIO = defaultIO()): Promise<n
           mcpServers: {
             "ai-memory": {
               command: "npx",
-              args: ["-y", "@ai-memory/mcp"],
+              args: ["-y", "@ai-agent-memory/mcp"],
               env: { AI_MEMORY_PROJECT: cfg.project ?? "<project>" },
             },
           },
@@ -818,9 +818,9 @@ export async function runCli(argv: string[], io: CliIO = defaultIO()): Promise<n
         out(snippet, () =>
           [
             "Run the MCP server over stdio:",
-            "  npx -y @ai-memory/mcp            # or: ai-memory-mcp",
+            "  npx -y @ai-agent-memory/mcp            # or: ai-memory-mcp",
             "",
-            "Claude Code:   claude mcp add ai-memory -- npx -y @ai-memory/mcp",
+            "Claude Code:   claude mcp add ai-memory -- npx -y @ai-agent-memory/mcp",
             "Codex:         add [mcp_servers.ai-memory] to ~/.codex/config.toml",
             "Gemini CLI:    add to ~/.gemini/settings.json → mcpServers",
             "OpenCode:      add to opencode.json → mcp",

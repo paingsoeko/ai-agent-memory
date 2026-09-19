@@ -1,6 +1,6 @@
 # basic-usage
 
-A minimal example project using `@ai-memory/core` directly: remember, dedup, conflict superseding, ingestion, recall with explanations and provenance.
+A minimal example project using `@ai-agent-memory/core` directly: remember, dedup, conflict superseding, ingestion, recall with explanations and provenance.
 
 ```bash
 pnpm build

@@ -1,4 +1,4 @@
-import { createMemory } from "@ai-memory/core";
+import { createMemory } from "@ai-agent-memory/core";
 import { describe, expect, it } from "vitest";
 import {
   buildSystemPromptWithMemory,

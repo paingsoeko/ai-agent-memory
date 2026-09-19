@@ -6,7 +6,7 @@ import {
   type BootstrapOptions,
   type ConfigSnippet,
   type McpConfigOptions,
-} from "@ai-memory/core";
+} from "@ai-agent-memory/core";
 
 /**
  * OpenCode integration: `opencode.json` MCP entry, AGENTS.md bootstrap text and

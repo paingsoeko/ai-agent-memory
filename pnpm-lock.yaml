@@ -199,55 +199,55 @@ importers:
 
   examples/basic-usage:
     dependencies:
-      '@ai-memory/core':
+      '@ai-agent-memory/core':
         specifier: workspace:^
         version: link:../../packages/core
 
   examples/openrouter:
     dependencies:
-      '@ai-memory/adapter-openrouter':
+      '@ai-agent-memory/adapter-openrouter':
         specifier: workspace:^
         version: link:../../packages/adapters/openrouter
-      '@ai-memory/core':
+      '@ai-agent-memory/core':
         specifier: workspace:^
         version: link:../../packages/core
 
   packages/adapters/claude:
     dependencies:
-      '@ai-memory/core':
+      '@ai-agent-memory/core':
         specifier: workspace:^
         version: link:../../core
 
   packages/adapters/codex:
     dependencies:
-      '@ai-memory/core':
+      '@ai-agent-memory/core':
         specifier: workspace:^
         version: link:../../core
 
   packages/adapters/gemini:
     dependencies:
-      '@ai-memory/core':
+      '@ai-agent-memory/core':
         specifier: workspace:^
         version: link:../../core
 
   packages/adapters/opencode:
     dependencies:
-      '@ai-memory/core':
+      '@ai-agent-memory/core':
         specifier: workspace:^
         version: link:../../core
 
   packages/adapters/openrouter:
     dependencies:
-      '@ai-memory/core':
+      '@ai-agent-memory/core':
         specifier: workspace:^
         version: link:../../core
 
   packages/cli:
     dependencies:
-      '@ai-memory/core':
+      '@ai-agent-memory/core':
         specifier: workspace:^
         version: link:../core
-      '@ai-memory/embeddings':
+      '@ai-agent-memory/embeddings':
         specifier: workspace:^
         version: link:../embeddings
 
@@ -255,16 +255,16 @@ importers:
 
   packages/embeddings:
     dependencies:
-      '@ai-memory/core':
+      '@ai-agent-memory/core':
         specifier: workspace:^
         version: link:../core
 
   packages/mcp:
     dependencies:
-      '@ai-memory/core':
+      '@ai-agent-memory/core':
         specifier: workspace:^
         version: link:../core
-      '@ai-memory/embeddings':
+      '@ai-agent-memory/embeddings':
         specifier: workspace:^
         version: link:../embeddings
       '@modelcontextprotocol/sdk':

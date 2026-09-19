@@ -22,7 +22,7 @@ One memory. Any agent. Your machine. No vendor lock-in.
 ## Quick start
 
 ```bash
-npm install -g @ai-memory/cli
+npm install -g @ai-agent-memory/cli
 
 aam init
 aam remember "I prefer PostgreSQL for backend projects."
@@ -38,7 +38,7 @@ aam recall "database preference"
 ### 1. Install and initialise
 
 ```bash
-npm install -g @ai-memory/cli     # gives you the `aam` command
+npm install -g @ai-agent-memory/cli     # gives you the `aam` command
 aam init                          # creates ~/.ai-memory/memory.db and ~/.config/ai-memory/config.json
 aam status                        # database stats, active project, config sources
 ```
@@ -99,8 +99,8 @@ Ids can be abbreviated to any unique prefix.
 Every agent talks to the same database over MCP:
 
 ```bash
-claude mcp add ai-memory -- npx -y @ai-memory/mcp       # Claude Code
-codex mcp add ai-memory -- npx -y @ai-memory/mcp        # Codex
+claude mcp add ai-memory -- npx -y @ai-agent-memory/mcp       # Claude Code
+codex mcp add ai-memory -- npx -y @ai-agent-memory/mcp        # Codex
 aam mcp                                                 # snippets for Gemini CLI, OpenCode, generic JSON
 ```
 
@@ -148,16 +148,16 @@ Keyword search (FTS5) is always on. To add embeddings, edit `~/.config/ai-memory
 { "embeddings": { "provider": "hash" } }
 ```
 
-`hash` is local and dependency-free. For neural embeddings install `@ai-memory/embeddings` and use `"local"` (transformers.js, in-process), `"ollama"`, or `"openai"`; network providers additionally require `"privacy": { "allowNetworkEmbeddings": true }`. Run `aam embed` once to backfill. See [docs/configuration.md](docs/configuration.md).
+`hash` is local and dependency-free. For neural embeddings install `@ai-agent-memory/embeddings` and use `"local"` (transformers.js, in-process), `"ollama"`, or `"openai"`; network providers additionally require `"privacy": { "allowNetworkEmbeddings": true }`. Run `aam embed` once to backfill. See [docs/configuration.md](docs/configuration.md).
 
 ## Programmatic API
 
 ```bash
-npm install @ai-memory/core
+npm install @ai-agent-memory/core
 ```
 
 ```ts
-import { createMemory } from "@ai-memory/core";
+import { createMemory } from "@ai-agent-memory/core";
 
 const memory = await createMemory({ project: "my-app" });
 
@@ -190,11 +190,11 @@ See [docs/api.md](docs/api.md) for the full API.
 
 | Package | What it is |
 | --- | --- |
-| [`@ai-memory/core`](packages/core) | Memory engine, types, `MemoryStore` interface, SQLite store, hybrid search, lifecycle, ingestion |
-| [`@ai-memory/cli`](packages/cli) | `ai-memory` command-line tool (`--json` for agents) |
-| [`@ai-memory/mcp`](packages/mcp) | MCP server exposing `memory_search`, `memory_recall`, `memory_remember`, `memory_update`, `memory_forget`, `memory_inspect`, `memory_list`, `memory_ingest`, `memory_status` |
-| [`@ai-memory/embeddings`](packages/embeddings) | Optional embedding providers: OpenAI-compatible APIs, OpenRouter, Ollama, transformers.js |
-| [`@ai-memory/adapter-claude`](packages/adapters/claude), [`-codex`](packages/adapters/codex), [`-gemini`](packages/adapters/gemini), [`-opencode`](packages/adapters/opencode), [`-openrouter`](packages/adapters/openrouter) | Bootstrap instructions, hooks, config snippets and context formatting per agent (no storage logic) |
+| [`@ai-agent-memory/core`](packages/core) | Memory engine, types, `MemoryStore` interface, SQLite store, hybrid search, lifecycle, ingestion |
+| [`@ai-agent-memory/cli`](packages/cli) | `ai-memory` command-line tool (`--json` for agents) |
+| [`@ai-agent-memory/mcp`](packages/mcp) | MCP server exposing `memory_search`, `memory_recall`, `memory_remember`, `memory_update`, `memory_forget`, `memory_inspect`, `memory_list`, `memory_ingest`, `memory_status` |
+| [`@ai-agent-memory/embeddings`](packages/embeddings) | Optional embedding providers: OpenAI-compatible APIs, OpenRouter, Ollama, transformers.js |
+| [`@ai-agent-memory/adapter-claude`](packages/adapters/claude), [`-codex`](packages/adapters/codex), [`-gemini`](packages/adapters/gemini), [`-opencode`](packages/adapters/opencode), [`-openrouter`](packages/adapters/openrouter) | Bootstrap instructions, hooks, config snippets and context formatting per agent (no storage logic) |
 
 ## How it works
 

@@ -1,7 +1,7 @@
-# @ai-memory/cli
+# @ai-agent-memory/cli
 
 ```bash
-npm install -g @ai-memory/cli
+npm install -g @ai-agent-memory/cli
 aam init
 aam remember "I prefer PostgreSQL for backend projects."
 aam recall "database preference" --json

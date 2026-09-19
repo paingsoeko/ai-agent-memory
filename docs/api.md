@@ -1,4 +1,4 @@
-# API reference (`@ai-memory/core`)
+# API reference (`@ai-agent-memory/core`)
 
 ## `createMemory(options?) → Promise<MemoryEngine>`
 

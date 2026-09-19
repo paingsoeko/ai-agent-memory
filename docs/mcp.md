@@ -1,9 +1,9 @@
 # MCP server
 
-`@ai-memory/mcp` exposes the local memory store to any MCP-capable agent over stdio. It has no cloud dependency: the server process opens the same SQLite file the CLI uses.
+`@ai-agent-memory/mcp` exposes the local memory store to any MCP-capable agent over stdio. It has no cloud dependency: the server process opens the same SQLite file the CLI uses.
 
 ```bash
-npx -y @ai-memory/mcp                       # or after global install: ai-memory-mcp
+npx -y @ai-agent-memory/mcp                       # or after global install: ai-memory-mcp
 ai-memory-mcp --project my-app --db ~/.ai-memory/memory.db
 ```
 
@@ -38,8 +38,8 @@ The server advertises `instructions` telling the agent to recall at task start, 
 ## Programmatic use
 
 ```ts
-import { createMemory } from "@ai-memory/core";
-import { createMcpServer } from "@ai-memory/mcp";
+import { createMemory } from "@ai-agent-memory/core";
+import { createMcpServer } from "@ai-agent-memory/mcp";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 
 const engine = await createMemory();

@@ -3,12 +3,12 @@
 ## 1. Register the MCP server
 
 ```bash
-claude mcp add ai-memory -- npx -y @ai-memory/mcp
+claude mcp add ai-memory -- npx -y @ai-agent-memory/mcp
 # project-scoped alternative: add to .mcp.json
 ```
 
 ```json
-{ "mcpServers": { "ai-memory": { "command": "npx", "args": ["-y", "@ai-memory/mcp"] } } }
+{ "mcpServers": { "ai-memory": { "command": "npx", "args": ["-y", "@ai-agent-memory/mcp"] } } }
 ```
 
 Claude then sees `memory_recall`, `memory_remember`, `memory_search`, `memory_inspect`, `memory_forget`, `memory_update`, `memory_list`, `memory_ingest`, `memory_status`.
@@ -18,7 +18,7 @@ Claude then sees `memory_recall`, `memory_remember`, `memory_search`, `memory_in
 Append the output of the adapter to `CLAUDE.md` (project) or `~/.claude/CLAUDE.md` (user):
 
 ```bash
-node -e 'import("@ai-memory/adapter-claude").then(m => console.log(m.claudeAdapter.bootstrapInstructions({ project: "my-app" })))' >> CLAUDE.md
+node -e 'import("@ai-agent-memory/adapter-claude").then(m => console.log(m.claudeAdapter.bootstrapInstructions({ project: "my-app" })))' >> CLAUDE.md
 ```
 
 ## 3. Hooks (automatic mode)

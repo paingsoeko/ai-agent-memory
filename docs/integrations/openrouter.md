@@ -1,10 +1,10 @@
 # OpenRouter and custom LLM agents
 
-There is no OpenRouter *agent* to configure; OpenRouter is an API. `@ai-memory/adapter-openrouter` provides helpers for agents you write yourself against OpenRouter (or any OpenAI-compatible chat API):
+There is no OpenRouter *agent* to configure; OpenRouter is an API. `@ai-agent-memory/adapter-openrouter` provides helpers for agents you write yourself against OpenRouter (or any OpenAI-compatible chat API):
 
 ```ts
-import { createMemory } from "@ai-memory/core";
-import { buildSystemPromptWithMemory, ingestConversation } from "@ai-memory/adapter-openrouter";
+import { createMemory } from "@ai-agent-memory/core";
+import { buildSystemPromptWithMemory, ingestConversation } from "@ai-agent-memory/adapter-openrouter";
 
 const memory = await createMemory({ project: "my-app" });
 const system = await buildSystemPromptWithMemory(memory, { task: userMessage });

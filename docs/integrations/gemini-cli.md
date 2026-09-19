@@ -7,14 +7,14 @@
 ```json
 {
   "mcpServers": {
-    "ai-memory": { "command": "npx", "args": ["-y", "@ai-memory/mcp"], "timeout": 30000, "trust": false }
+    "ai-memory": { "command": "npx", "args": ["-y", "@ai-agent-memory/mcp"], "timeout": 30000, "trust": false }
   }
 }
 ```
 
 ## Instructions
 
-Append `geminiAdapter.bootstrapInstructions()` (from `@ai-memory/adapter-gemini`) to `GEMINI.md`.
+Append `geminiAdapter.bootstrapInstructions()` (from `@ai-agent-memory/adapter-gemini`) to `GEMINI.md`.
 
 ## Custom command (no MCP needed)
 

@@ -7,7 +7,7 @@ import {
   type IngestMessage,
   type McpConfigOptions,
   type MemoryEngine,
-} from "@ai-memory/core";
+} from "@ai-agent-memory/core";
 
 /**
  * OpenRouter (and any OpenAI-compatible chat API) integration for custom

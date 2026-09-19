@@ -5,8 +5,8 @@ import type {
   MemoryStats,
   RawEvent,
   SceneMemory,
-} from "@ai-memory/core";
-import { shortId } from "@ai-memory/core";
+} from "@ai-agent-memory/core";
+import { shortId } from "@ai-agent-memory/core";
 
 const pad = (s: string, n: number) => (s.length >= n ? s : s + " ".repeat(n - s.length));
 

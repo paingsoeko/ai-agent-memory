@@ -7,14 +7,14 @@
 ```toml
 [mcp_servers.ai-memory]
 command = "npx"
-args = ["-y", "@ai-memory/mcp"]
+args = ["-y", "@ai-agent-memory/mcp"]
 ```
 
-or `codex mcp add ai-memory -- npx -y @ai-memory/mcp`.
+or `codex mcp add ai-memory -- npx -y @ai-agent-memory/mcp`.
 
 ## Instructions
 
-Append `codexAdapter.bootstrapInstructions()` (from `@ai-memory/adapter-codex`) to `AGENTS.md` in the repository or `~/.codex/AGENTS.md`.
+Append `codexAdapter.bootstrapInstructions()` (from `@ai-agent-memory/adapter-codex`) to `AGENTS.md` in the repository or `~/.codex/AGENTS.md`.
 
 ## Automatic ingestion via `notify`
 
