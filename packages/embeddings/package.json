@@ -3,6 +3,27 @@
   "version": "0.1.0",
   "description": "Embedding providers for @ai-memory (OpenAI-compatible APIs, Ollama, transformers.js)",
   "license": "MIT",
+  "author": "paingsoeko",
+  "homepage": "https://github.com/paingsoeko/ai-agent-memory/tree/main/packages/embeddings#readme",
+  "bugs": {
+    "url": "https://github.com/paingsoeko/ai-agent-memory/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/paingsoeko/ai-agent-memory.git",
+    "directory": "packages/embeddings"
+  },
+  "keywords": [
+    "ai",
+    "memory",
+    "agents",
+    "local-first",
+    "sqlite",
+    "mcp",
+    "claude",
+    "codex",
+    "gemini"
+  ],
   "type": "module",
   "engines": {
     "node": ">=22.13.0"
@@ -24,22 +45,6 @@
     "build": "tsc -p tsconfig.json",
     "test": "vitest run --root ../.. packages/embeddings"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/paingsoeko/ai-agent-memory.git",
-    "directory": "packages/embeddings"
-  },
-  "keywords": [
-    "ai",
-    "memory",
-    "agents",
-    "local-first",
-    "sqlite",
-    "mcp",
-    "claude",
-    "codex",
-    "gemini"
-  ],
   "publishConfig": {
     "access": "public"
   },

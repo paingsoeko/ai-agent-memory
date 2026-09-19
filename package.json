@@ -19,7 +19,10 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "verify": "pnpm lint && pnpm format:check && pnpm build && pnpm test",
-    "smoke": "node tests/smoke/cli-smoke.mjs"
+    "smoke": "node tests/smoke/cli-smoke.mjs",
+    "release:version": "node scripts/release/set-version.mjs",
+    "release:check": "node scripts/release/check-versions.mjs",
+    "release:dry-run": "node scripts/release/publish.mjs --dry-run"
   },
   "devDependencies": {
     "@eslint/js": "^9.30.0",
@@ -32,5 +35,13 @@
     "typescript-eslint": "^8.35.0",
     "vitest": "^3.2.0",
     "zod": "^3.25.76"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/paingsoeko/ai-agent-memory.git"
+  },
+  "homepage": "https://github.com/paingsoeko/ai-agent-memory#readme",
+  "bugs": {
+    "url": "https://github.com/paingsoeko/ai-agent-memory/issues"
   }
 }

@@ -10,3 +10,4 @@ coverage/
 .ai-memory/
 .idea/
 .vscode/
+artifacts/

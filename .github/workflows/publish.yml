@@ -1,0 +1,81 @@
+name: Publish to npm
+
+# Publishes every public workspace package when a version tag (v1.2.3) is pushed.
+# Authentication uses npm Trusted Publishing (GitHub OIDC): no NPM_TOKEN secret.
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+      - "v[0-9]+.[0-9]+.[0-9]+-*"
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        description: "Run every step but publish with --dry-run"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Validate and publish
+    runs-on: ubuntu-latest
+    environment: npm
+    env:
+      NPM_CONFIG_PROVENANCE: "true"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pnpm (version from package.json "packageManager")
+        uses: pnpm/action-setup@v4
+
+      - name: Install Node.js LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+
+      - name: Upgrade npm CLI (Trusted Publishing needs npm >= 11.5.1)
+        run: |
+          npm install -g npm@latest
+          npm --version
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint and typecheck
+        run: |
+          pnpm lint
+          pnpm typecheck
+
+      - name: Test
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
+
+      - name: Smoke test built CLI and MCP server
+        run: pnpm smoke
+
+      - name: Verify package versions match the tag
+        if: github.event_name == 'push'
+        run: node scripts/release/check-versions.mjs "${GITHUB_REF_NAME}"
+
+      - name: Verify package contents (dry-run pack)
+        run: pnpm -r --filter './packages/**' exec npm pack --dry-run
+
+      - name: Publish (skips versions that already exist on npm)
+        if: github.event_name == 'push'
+        run: node scripts/release/publish.mjs
+
+      - name: Publish dry-run (manual trigger)
+        if: github.event_name == 'workflow_dispatch'
+        run: node scripts/release/publish.mjs --dry-run

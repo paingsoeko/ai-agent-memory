@@ -3,6 +3,27 @@
   "version": "0.1.0",
   "description": "Local-first, agent-agnostic memory engine for AI coding agents (SQLite + FTS5 + optional embeddings)",
   "license": "MIT",
+  "author": "paingsoeko",
+  "homepage": "https://github.com/paingsoeko/ai-agent-memory/tree/main/packages/core#readme",
+  "bugs": {
+    "url": "https://github.com/paingsoeko/ai-agent-memory/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/paingsoeko/ai-agent-memory.git",
+    "directory": "packages/core"
+  },
+  "keywords": [
+    "ai",
+    "memory",
+    "agents",
+    "local-first",
+    "sqlite",
+    "mcp",
+    "claude",
+    "codex",
+    "gemini"
+  ],
   "type": "module",
   "engines": {
     "node": ">=22.13.0"
@@ -28,22 +49,6 @@
     "build": "tsc -p tsconfig.json",
     "test": "vitest run --root ../.. packages/core"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/paingsoeko/ai-agent-memory.git",
-    "directory": "packages/core"
-  },
-  "keywords": [
-    "ai",
-    "memory",
-    "agents",
-    "local-first",
-    "sqlite",
-    "mcp",
-    "claude",
-    "codex",
-    "gemini"
-  ],
   "publishConfig": {
     "access": "public"
   },
