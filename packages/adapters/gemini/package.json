@@ -1,6 +1,6 @@
 {
   "name": "@ai-agent-memory/adapter-gemini",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "gemini integration helpers for @ai-memory (bootstrap instructions, hooks, config, context formatting)",
   "license": "MIT",
   "author": "paingsoeko",
