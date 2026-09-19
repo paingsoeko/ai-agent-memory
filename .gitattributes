@@ -1,0 +1,5 @@
+# Normalise line endings so Prettier (endOfLine: lf) passes on Windows checkouts
+* text=auto eol=lf
+*.png binary
+*.db binary
+*.tgz binary
