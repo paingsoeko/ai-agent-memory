@@ -1,6 +1,6 @@
 {
   "name": "@ai-agent-memory/mcp",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "MCP server exposing the local @ai-memory store to any MCP-capable agent",
   "license": "MIT",
   "author": "paingsoeko",

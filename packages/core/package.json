@@ -1,6 +1,6 @@
 {
   "name": "@ai-agent-memory/core",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Local-first, agent-agnostic memory engine for AI coding agents (SQLite + FTS5 + optional embeddings)",
   "license": "MIT",
   "author": "paingsoeko",

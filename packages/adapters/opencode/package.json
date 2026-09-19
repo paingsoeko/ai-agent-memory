@@ -1,6 +1,6 @@
 {
   "name": "@ai-agent-memory/adapter-opencode",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "opencode integration helpers for @ai-memory (bootstrap instructions, hooks, config, context formatting)",
   "license": "MIT",
   "author": "paingsoeko",
