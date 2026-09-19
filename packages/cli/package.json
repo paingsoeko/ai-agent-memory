@@ -1,6 +1,6 @@
 {
   "name": "@ai-agent-memory/cli",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Command-line interface (aam) for @ai-memory: init, remember, recall, search, inspect, export/import",
   "license": "MIT",
   "author": "paingsoeko",

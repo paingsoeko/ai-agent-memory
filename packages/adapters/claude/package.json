@@ -1,6 +1,6 @@
 {
   "name": "@ai-agent-memory/adapter-claude",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "claude integration helpers for @ai-memory (bootstrap instructions, hooks, config, context formatting)",
   "license": "MIT",
   "author": "paingsoeko",
