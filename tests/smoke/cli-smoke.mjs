@@ -97,6 +97,15 @@ const rc = await send(3, "tools/call", { name: "memory_recall", arguments: { que
 if (!rc.result.content[0].text.includes("Temporal"))
   throw new Error("mcp recall failed: " + JSON.stringify(rc));
 console.log(rc.result.content[0].text);
-proc.kill("SIGTERM");
-rmSync(home, { recursive: true, force: true });
+// Wait for the server to exit before cleaning up: on Windows the SQLite file stays locked until then.
+await new Promise((res) => {
+  proc.once("exit", res);
+  proc.kill("SIGTERM");
+  setTimeout(() => proc.kill("SIGKILL"), 3000).unref();
+});
+try {
+  rmSync(home, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 });
+} catch (err) {
+  console.warn(`(cleanup skipped: ${err.code ?? err.message})`);
+}
 console.log("\n✓ smoke test passed");
