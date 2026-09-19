@@ -1,5 +1,5 @@
 {
-  "name": "@ai-agent-memory/adapter-codex",
+  "name": "@local-ai-agent-memory/adapter-codex",
   "version": "0.1.0",
   "description": "codex integration helpers for @ai-memory (bootstrap instructions, hooks, config, context formatting)",
   "license": "MIT",
@@ -49,6 +49,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@ai-agent-memory/core": "workspace:^"
+    "@local-ai-agent-memory/core": "workspace:^"
   }
 }

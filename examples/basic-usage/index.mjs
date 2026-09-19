@@ -1,6 +1,6 @@
 // Example project: a tiny "team knowledge" script using the programmatic API.
 // Run with `pnpm --filter example-basic-usage start` after `pnpm build`.
-import { createMemory } from "@ai-agent-memory/core";
+import { createMemory } from "@local-ai-agent-memory/core";
 import { mkdtempSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";

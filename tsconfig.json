@@ -8,15 +8,15 @@
     "sourceMap": false,
     "baseUrl": ".",
     "paths": {
-      "@ai-agent-memory/core": ["packages/core/src/index.ts"],
-      "@ai-agent-memory/embeddings": ["packages/embeddings/src/index.ts"],
-      "@ai-agent-memory/cli": ["packages/cli/src/index.ts"],
-      "@ai-agent-memory/mcp": ["packages/mcp/src/index.ts"],
-      "@ai-agent-memory/adapter-claude": ["packages/adapters/claude/src/index.ts"],
-      "@ai-agent-memory/adapter-codex": ["packages/adapters/codex/src/index.ts"],
-      "@ai-agent-memory/adapter-gemini": ["packages/adapters/gemini/src/index.ts"],
-      "@ai-agent-memory/adapter-opencode": ["packages/adapters/opencode/src/index.ts"],
-      "@ai-agent-memory/adapter-openrouter": ["packages/adapters/openrouter/src/index.ts"]
+      "@local-ai-agent-memory/core": ["packages/core/src/index.ts"],
+      "@local-ai-agent-memory/embeddings": ["packages/embeddings/src/index.ts"],
+      "@local-ai-agent-memory/cli": ["packages/cli/src/index.ts"],
+      "@local-ai-agent-memory/mcp": ["packages/mcp/src/index.ts"],
+      "@local-ai-agent-memory/adapter-claude": ["packages/adapters/claude/src/index.ts"],
+      "@local-ai-agent-memory/adapter-codex": ["packages/adapters/codex/src/index.ts"],
+      "@local-ai-agent-memory/adapter-gemini": ["packages/adapters/gemini/src/index.ts"],
+      "@local-ai-agent-memory/adapter-opencode": ["packages/adapters/opencode/src/index.ts"],
+      "@local-ai-agent-memory/adapter-openrouter": ["packages/adapters/openrouter/src/index.ts"]
     }
   },
   "include": [

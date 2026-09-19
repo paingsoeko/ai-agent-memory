@@ -1,4 +1,4 @@
-import { registerEmbeddingProvider } from "@ai-agent-memory/core";
+import { registerEmbeddingProvider } from "@local-ai-agent-memory/core";
 import { OllamaEmbeddingProvider } from "./ollama.js";
 import { OpenAICompatibleEmbeddingProvider } from "./openai.js";
 import { TransformersEmbeddingProvider } from "./transformers.js";

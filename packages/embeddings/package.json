@@ -1,5 +1,5 @@
 {
-  "name": "@ai-agent-memory/embeddings",
+  "name": "@local-ai-agent-memory/embeddings",
   "version": "0.1.0",
   "description": "Embedding providers for @ai-memory (OpenAI-compatible APIs, Ollama, transformers.js)",
   "license": "MIT",
@@ -49,6 +49,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@ai-agent-memory/core": "workspace:^"
+    "@local-ai-agent-memory/core": "workspace:^"
   }
 }

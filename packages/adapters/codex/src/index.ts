@@ -6,7 +6,7 @@ import {
   type BootstrapOptions,
   type ConfigSnippet,
   type McpConfigOptions,
-} from "@ai-agent-memory/core";
+} from "@local-ai-agent-memory/core";
 
 function tomlString(s: string): string {
   return JSON.stringify(s);
@@ -45,7 +45,7 @@ export const codexAdapter: AgentAdapter = {
       snippet: null,
       text,
       description:
-        "Registers the ai-memory MCP server with Codex. Alternatively: `codex mcp add ai-memory -- npx -y @ai-agent-memory/mcp`.",
+        "Registers the ai-memory MCP server with Codex. Alternatively: `codex mcp add ai-memory -- npx -y @local-ai-agent-memory/mcp`.",
     };
   },
 

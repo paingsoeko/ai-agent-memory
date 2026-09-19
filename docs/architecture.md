@@ -9,11 +9,11 @@ ai-memory is a small, layered system. The engine knows nothing about any AI vend
 └──────┬────────┘  └──────┬────────┘  └───────┬────────┘  └──────┬────────┘
        │  adapters: bootstrap text, hooks, config snippets, formatting only
 ┌──────▼──────────────────▼────────────────────▼──────────────────▼────────┐
-│  @ai-agent-memory/mcp            @ai-agent-memory/cli              TypeScript API     │
+│  @local-ai-agent-memory/mcp            @local-ai-agent-memory/cli              TypeScript API     │
 └──────────────────────────────────┬────────────────────────────────────────┘
                                    │
 ┌──────────────────────────────────▼────────────────────────────────────────┐
-│ @ai-agent-memory/core  MemoryEngine                                             │
+│ @local-ai-agent-memory/core  MemoryEngine                                             │
 │   remember · recall · search · inspect · update · forget · ingest         │
 │   lifecycle: dedup → conflict → scoring → scenes → promotion              │
 │   search: FTS5 ∪ vectors → RRF → rerank                                   │
@@ -31,13 +31,13 @@ ai-memory is a small, layered system. The engine knows nothing about any AI vend
 
 | Package | Depends on | Responsibility |
 | --- | --- | --- |
-| `@ai-agent-memory/core` | nothing (Node ≥ 22.13) | Domain types, `MemoryStore` contract, default SQLite store, engine, search, lifecycle, heuristic extractor, config loading, built-in local hashing embeddings, prompt formatting, adapter contract |
-| `@ai-agent-memory/embeddings` | core | Network / neural embedding providers; registers them by name on import |
-| `@ai-agent-memory/cli` | core, embeddings | `ai-memory` binary. Pure function `runCli(argv, io)` so it is testable in-process |
-| `@ai-agent-memory/mcp` | core, embeddings, `@modelcontextprotocol/sdk` | `createMcpServer(engine)` + `ai-memory-mcp` stdio binary |
-| `@ai-agent-memory/adapter-*` | core | Instruction text, MCP config snippets, hook definitions, context formatting for one agent. **No storage logic.** |
+| `@local-ai-agent-memory/core` | nothing (Node ≥ 22.13) | Domain types, `MemoryStore` contract, default SQLite store, engine, search, lifecycle, heuristic extractor, config loading, built-in local hashing embeddings, prompt formatting, adapter contract |
+| `@local-ai-agent-memory/embeddings` | core | Network / neural embedding providers; registers them by name on import |
+| `@local-ai-agent-memory/cli` | core, embeddings | `ai-memory` binary. Pure function `runCli(argv, io)` so it is testable in-process |
+| `@local-ai-agent-memory/mcp` | core, embeddings, `@modelcontextprotocol/sdk` | `createMcpServer(engine)` + `ai-memory-mcp` stdio binary |
+| `@local-ai-agent-memory/adapter-*` | core | Instruction text, MCP config snippets, hook definitions, context formatting for one agent. **No storage logic.** |
 
-Why the SQLite store lives in core rather than a separate `storage-sqlite` package: `npm install @ai-agent-memory/core` must work with zero configuration, and a separate default-store package would create a dependency cycle (core needs the store to have a default; the store needs core's types). The `MemoryStore` interface is nevertheless the only thing the engine uses, so alternative stores (`PostgresStore`, an encrypted store) are separate packages that implement it and are passed via `createMemory({ store })`.
+Why the SQLite store lives in core rather than a separate `storage-sqlite` package: `npm install @local-ai-agent-memory/core` must work with zero configuration, and a separate default-store package would create a dependency cycle (core needs the store to have a default; the store needs core's types). The `MemoryStore` interface is nevertheless the only thing the engine uses, so alternative stores (`PostgresStore`, an encrypted store) are separate packages that implement it and are passed via `createMemory({ store })`.
 
 ## Data model
 

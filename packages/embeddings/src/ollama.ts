@@ -1,4 +1,4 @@
-import { MemoryError, type EmbeddingProvider } from "@ai-agent-memory/core";
+import { MemoryError, type EmbeddingProvider } from "@local-ai-agent-memory/core";
 
 export interface OllamaOptions {
   baseUrl?: string;

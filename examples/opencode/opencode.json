@@ -3,7 +3,7 @@
   "mcp": {
     "ai-memory": {
       "type": "local",
-      "command": ["npx", "-y", "@ai-agent-memory/mcp"],
+      "command": ["npx", "-y", "@local-ai-agent-memory/mcp"],
       "enabled": true
     }
   }

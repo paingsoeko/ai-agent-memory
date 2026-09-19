@@ -2,7 +2,7 @@
 
 Three equivalent ways to use the shared memory:
 
-1. **TypeScript API** — `import { createMemory } from "@ai-agent-memory/core"` (see [api.md](../api.md)).
+1. **TypeScript API** — `import { createMemory } from "@local-ai-agent-memory/core"` (see [api.md](../api.md)).
 2. **CLI with `--json`** — any language: `aam recall "..." --json`, `aam remember "..." --json`, `echo '[{"role":"user","content":"..."}]' | aam ingest --json`.
 3. **MCP** — run `ai-memory-mcp` over stdio from any MCP client (see [mcp.md](../mcp.md)).
 

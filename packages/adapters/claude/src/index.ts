@@ -6,7 +6,7 @@ import {
   type BootstrapOptions,
   type ConfigSnippet,
   type McpConfigOptions,
-} from "@ai-agent-memory/core";
+} from "@local-ai-agent-memory/core";
 
 /**
  * Claude Code integration: MCP server registration (.mcp.json or

@@ -1,7 +1,7 @@
 # ~/.codex/config.toml — excerpt
 [mcp_servers.ai-memory]
 command = "npx"
-args = ["-y", "@ai-agent-memory/mcp"]
+args = ["-y", "@local-ai-agent-memory/mcp"]
 
 # Automatic ingestion after every turn (raw events + conservative extraction)
 notify = ["aam", "ingest", "--from-hook", "--agent", "codex", "--json"]

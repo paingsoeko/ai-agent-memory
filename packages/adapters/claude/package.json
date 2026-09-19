@@ -1,5 +1,5 @@
 {
-  "name": "@ai-agent-memory/adapter-claude",
+  "name": "@local-ai-agent-memory/adapter-claude",
   "version": "0.1.0",
   "description": "claude integration helpers for @ai-memory (bootstrap instructions, hooks, config, context formatting)",
   "license": "MIT",
@@ -49,6 +49,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@ai-agent-memory/core": "workspace:^"
+    "@local-ai-agent-memory/core": "workspace:^"
   }
 }
