@@ -6,10 +6,24 @@ import {
   type MemoryScope,
   type MemoryStatus,
 } from "@ai-agent-memory/core";
+import { readFileSync } from "node:fs";
 import { z } from "zod";
 
 export const MCP_SERVER_NAME = "ai-memory";
-export const MCP_SERVER_VERSION = "0.1.0";
+
+/** Server version reported to MCP clients (read from package.json, never hardcoded). */
+function packageVersion(): string {
+  try {
+    const raw = readFileSync(new URL("../package.json", import.meta.url), "utf8");
+    const version = (JSON.parse(raw) as { version?: unknown }).version;
+    if (typeof version === "string" && /^\d+\.\d+\.\d+/.test(version)) return version;
+  } catch {
+    // Unexpected layout; fall through to the dev fallback below.
+  }
+  return "0.0.0-dev";
+}
+
+export const MCP_SERVER_VERSION = packageVersion();
 
 const scopeSchema = z.enum(["global", "user", "project", "workspace", "session"]);
 const statusSchema = z.enum(["active", "superseded", "conflicted", "archived"]);

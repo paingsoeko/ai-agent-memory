@@ -24,7 +24,7 @@ Open `http://127.0.0.1:4123/?demo=1` to preview with built-in demo data
 
 ## Routes
 
-`#/overview` · `#/memories` · `#/scenes` · `#/scene/:id` · `#/core` ·
+`#/overview` · `#/memories` · `#/network` · `#/scenes` · `#/scene/:id` · `#/core` ·
 `#/projects` · `#/project/:id` · `#/sessions` · `#/session/:id` ·
 `#/sources` · `#/source/:id` · `#/search` · `#/conflicts` · `#/settings`
 

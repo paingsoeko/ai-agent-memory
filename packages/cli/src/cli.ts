@@ -27,7 +27,19 @@ import {
 } from "./format.js";
 import { defaultIO, type CliIO } from "./io.js";
 
-export const VERSION = "0.1.0";
+/** Version reported by `--version` (read from package.json, never hardcoded). */
+function packageVersion(): string {
+  try {
+    const raw = readFileSync(new URL("../package.json", import.meta.url), "utf8");
+    const version = (JSON.parse(raw) as { version?: unknown }).version;
+    if (typeof version === "string" && /^\d+\.\d+\.\d+/.test(version)) return version;
+  } catch {
+    // Unexpected layout; fall through to the dev fallback below.
+  }
+  return "0.0.0-dev";
+}
+
+export const VERSION = packageVersion();
 
 const OPTIONS = {
   json: { type: "boolean", default: false },

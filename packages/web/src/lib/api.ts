@@ -6,7 +6,9 @@ import {
   DEMO_SCENES,
   DEMO_SESSIONS,
   DEMO_STATS,
+  buildDemoGraph,
 } from "./demo";
+import type { MemoryGraph } from "./graph";
 import type {
   ActivityItem,
   Memory,
@@ -354,6 +356,29 @@ export const api = {
       return { data, total: data.length, limit: 50, offset: 0 };
     }
     return req("/api/conflicts?limit=50");
+  },
+  async graph(opts: { level?: string; query?: string; focus?: string } = {}): Promise<MemoryGraph> {
+    if (apiDown) {
+      if (EMPTY_MODE) {
+        return {
+          nodes: [],
+          edges: [],
+          stats: { L0: 0, L1: 0, L2: 0, L3: 0, edges: 0 },
+          totals: { L0: 0, L1: 0, L2: 0, L3: 0 },
+        };
+      }
+      const full = buildDemoGraph(opts.query);
+      const level = (opts.level ?? "all").toUpperCase();
+      const nodes = level === "ALL" ? full.nodes : full.nodes.filter((n) => n.level === level);
+      const ids = new Set(nodes.map((n) => n.id));
+      const edges = full.edges.filter((e) => ids.has(e.source) && ids.has(e.target));
+      return { ...full, nodes, edges, stats: { ...full.stats, edges: edges.length } };
+    }
+    const p = new URLSearchParams();
+    if (opts.level) p.set("level", opts.level);
+    if (opts.query) p.set("query", opts.query);
+    if (opts.focus) p.set("focus", opts.focus);
+    return req(`/api/memory-graph?${p.toString()}`);
   },
   async privacy() {
     if (apiDown)

@@ -32,6 +32,7 @@ ai-memory-server --port 4123 --host 127.0.0.1 --db ~/.ai-memory/memory.db
 | POST | `/api/memories/:id/supersede` | Supersede (`{ newerId }`) |
 | GET | `/api/conflicts` | Memories with `status=conflicted` |
 | GET | `/api/search?q=&mode=` | Pure relevance search (`keyword`/`semantic`/`hybrid`) with matched terms |
+| GET | `/api/memory-graph?...` | Neuron-network graph: L0–L3 nodes + typed edges (`project`, `level`, `query`/`q`, `focus`, `depth`, `limit`) |
 | GET/POST | `/api/scenes` | List / create scenes |
 | GET/PATCH/DELETE | `/api/scenes/:id` | Scene detail (with members), update, delete |
 | POST | `/api/scenes/:id/members` | Add memories (`{ memoryIds }`) |

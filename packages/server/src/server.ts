@@ -7,6 +7,7 @@ import {
 import { extname, join, normalize, resolve, sep } from "node:path";
 import { createMemory, type CreateMemoryOptions, type MemoryEngine } from "@ai-agent-memory/core";
 import "@ai-agent-memory/embeddings";
+import { buildMemoryGraph } from "./graph.js";
 
 export interface ServeOptions extends CreateMemoryOptions {
   port?: number;
@@ -396,6 +397,19 @@ export async function startServer(options: ServeOptions = {}): Promise<ApiServer
           send(res, 200, await engine.supersede(id, newer));
           return;
         }
+      }
+      // --- memory graph (neuron network) ---------------------------------------
+      if (path === "/api/memory-graph" && method === "GET") {
+        const graph = await buildMemoryGraph(engine, {
+          project: q.get("project") ?? undefined,
+          level: q.get("level") ?? undefined,
+          query: q.get("query") ?? q.get("q") ?? undefined,
+          focus: q.get("focus") ?? undefined,
+          depth: q.get("depth") ? Number(q.get("depth")) : undefined,
+          limit: num(q, "limit", 160, 600),
+        });
+        send(res, 200, graph);
+        return;
       }
       if (path === "/api/conflicts" && method === "GET") {
         const limit = num(q, "limit", 50, 200);

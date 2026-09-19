@@ -133,6 +133,7 @@ export interface ActivityItem {
 export type Route =
   | { name: "overview" }
   | { name: "memories" }
+  | { name: "network" }
   | { name: "scenes" }
   | { name: "scene"; id: string }
   | { name: "core" }

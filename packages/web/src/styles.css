@@ -35,6 +35,16 @@
   --radius-sm: 6px;
   --sidebar-w: 232px;
   --content-max: 1080px;
+
+  /* Memory network semantic tokens */
+  --memory-l0: #b7b7c0;
+  --memory-l1: #6f6f79;
+  --memory-l2: #2e2e35;
+  --memory-l3: #131316;
+  --memory-l3-halo: rgba(19, 19, 22, 0.14);
+  --memory-edge: #d4d4d9;
+  --memory-edge-strong: #8f8f99;
+  --memory-background: #fbfbfc;
 }
 
 [data-theme="dark"] {
@@ -62,6 +72,16 @@
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
   --shadow-md: 0 8px 28px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.4);
   --shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.6), 0 4px 16px rgba(0, 0, 0, 0.5);
+
+  /* Memory network semantic tokens */
+  --memory-l0: #4b4b54;
+  --memory-l1: #9b9ba6;
+  --memory-l2: #d6d6dc;
+  --memory-l3: #f2f2f4;
+  --memory-l3-halo: rgba(242, 242, 244, 0.13);
+  --memory-edge: #2b2b31;
+  --memory-edge-strong: #6d6d78;
+  --memory-background: #0c0c0e;
 }
 
 * {
@@ -1340,5 +1360,254 @@ details.advanced summary {
   *::after {
     animation-duration: 0.001s !important;
     transition-duration: 0.001s !important;
+  }
+}
+
+/* ---------- Memory network ---------- */
+.network-wrap {
+  position: relative;
+  height: calc(100dvh - 52px);
+  background: var(--memory-background);
+  overflow: hidden;
+}
+.network-wrap .react-flow {
+  background: var(--memory-background);
+}
+.mneuron {
+  border-radius: 50%;
+  border: 1.5px solid var(--neuron-c, var(--memory-l1));
+  background: var(--neuron-bg, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition:
+    opacity 200ms ease,
+    box-shadow 200ms ease;
+}
+.mneuron.l0 {
+  width: 7px;
+  height: 7px;
+  border-width: 1px;
+}
+.mneuron.l1 {
+  width: 12px;
+  height: 12px;
+}
+.mneuron.l2 {
+  width: 20px;
+  height: 20px;
+  border-width: 2px;
+}
+.mneuron.l3 {
+  width: 30px;
+  height: 30px;
+  border-width: 2px;
+  box-shadow:
+    0 0 0 6px var(--memory-l3-halo),
+    0 0 18px 2px var(--memory-l3-halo);
+  animation: halo 4s ease-in-out infinite;
+}
+@keyframes halo {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 6px var(--memory-l3-halo),
+      0 0 18px 2px var(--memory-l3-halo);
+  }
+  50% {
+    box-shadow:
+      0 0 0 9px var(--memory-l3-halo),
+      0 0 24px 4px var(--memory-l3-halo);
+  }
+}
+.mneuron .cnt {
+  position: absolute;
+  top: -9px;
+  right: -14px;
+  font-size: 10px;
+  font-weight: 650;
+  color: var(--text-secondary);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0 5px;
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+}
+.mneuron.matched {
+  outline: 2px solid var(--link);
+  outline-offset: 3px;
+}
+.mneuron.on-path {
+  outline: 2px solid var(--memory-edge-strong);
+  outline-offset: 3px;
+}
+.mneuron.status-conflicted {
+  border-color: var(--warning);
+  border-style: dashed;
+}
+.mneuron.status-superseded {
+  opacity: 0.55;
+}
+.mneuron.dim {
+  opacity: 0.13;
+}
+.mneuron.dim .cnt {
+  display: none;
+}
+.react-flow__node.selectable:focus .mneuron,
+.react-flow__node.selected .mneuron {
+  outline: 2px solid var(--link);
+  outline-offset: 4px;
+}
+.react-flow__edge.dimmed path {
+  opacity: 0.06;
+}
+.react-flow__edge.flow path {
+  stroke-dasharray: 6 5;
+  animation: dashflow 1.1s linear infinite;
+}
+@keyframes dashflow {
+  to {
+    stroke-dashoffset: -11;
+  }
+}
+.net-panel {
+  position: absolute;
+  z-index: 10;
+  background: color-mix(in srgb, var(--bg-elevated) 92%, transparent);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 10px 12px;
+  font-size: 12px;
+}
+.net-stats {
+  top: 12px;
+  left: 12px;
+  max-width: 240px;
+}
+.net-stats h2 {
+  margin: 0 0 2px;
+  font-size: 12.5px;
+  font-weight: 650;
+}
+.net-stats .row-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+.net-stats button.linklike {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+  font-weight: 550;
+}
+.net-stats button.linklike:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.net-tools {
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 8px;
+}
+.net-tools .input {
+  width: 210px;
+}
+.net-legend {
+  bottom: 12px;
+  left: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.net-legend .li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+}
+.net-legend .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.net-controls {
+  bottom: 12px;
+  right: 12px;
+  display: flex;
+  gap: 4px;
+  padding: 6px;
+}
+.net-path {
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  color: var(--text-secondary);
+  max-width: min(560px, 90%);
+}
+.net-path strong {
+  color: var(--text);
+}
+.net-menu {
+  position: absolute;
+  z-index: 20;
+  min-width: 190px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  padding: 6px;
+}
+.net-hint {
+  font-size: 11.5px;
+  color: var(--text-tertiary);
+}
+.react-flow__minimap {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+@media (max-width: 700px) {
+  .net-stats {
+    display: none;
+  }
+  .net-legend {
+    display: none;
+  }
+  .react-flow__minimap {
+    display: none;
+  }
+  .net-tools {
+    left: 8px;
+    right: 8px;
+    transform: none;
+    top: 8px;
+    flex-wrap: wrap;
+  }
+  .net-tools .input {
+    flex: 1;
+    min-width: 120px;
+    width: auto;
+  }
+  .net-path {
+    display: none;
   }
 }

@@ -1,3 +1,4 @@
+import type { GraphEdge, GraphNode, MemoryGraph } from "./graph";
 import type { Memory, Project, RawEvent, Scene, Session, Stats } from "./types";
 
 const now = Date.now();
@@ -69,6 +70,8 @@ const m1 = mem({
   createdAt: iso(now - 20 * d),
   updatedAt: iso(now - 2 * 60_000),
   agent: "claude-code",
+  sessionId: "2026-09-19-claude",
+  sourceIds: ["evt-002"],
 });
 const m2 = mem({
   id: "mem-traceparent",
@@ -80,6 +83,8 @@ const m2 = mem({
   tags: ["tracing", "temporal"],
   updatedAt: iso(now - 18 * 60_000),
   agent: "claude-code",
+  sessionId: "2026-09-19-claude",
+  sourceIds: ["evt-003"],
 });
 const m3 = mem({
   id: "mem-jsonb",
@@ -91,6 +96,8 @@ const m3 = mem({
   tags: ["postgres"],
   updatedAt: iso(now - 42 * 60_000),
   agent: "codex",
+  sessionId: "2026-09-19-codex",
+  sourceIds: ["evt-001"],
 });
 const m4 = mem({
   id: "mem-laravel-start",
@@ -327,3 +334,135 @@ export const DEMO_STATS: Stats = {
   dbPath: "~/.ai-memory/memory.db",
   dbSizeBytes: 48 * 1024 * 1024,
 };
+
+/* ---------------- demo memory graph (real links between the fixtures) ---------------- */
+
+const gNid = (level: string, ref: string) => `${level}:${ref}`;
+
+export function buildDemoGraph(query?: string): MemoryGraph {
+  const nodes: GraphNode[] = [];
+  const edges: GraphEdge[] = [];
+  const q = (query ?? "").trim().toLowerCase();
+  const match = (text: string) => q.length > 0 && text.toLowerCase().includes(q);
+
+  for (const e of DEMO_EVENTS) {
+    nodes.push({
+      id: gNid("L0", e.id),
+      level: "L0",
+      kind: "event",
+      refId: e.id,
+      label: e.content.slice(0, 90),
+      content: e.content,
+      type: e.kind,
+      status: "active",
+      importance: 0.3,
+      confidence: 0.5,
+      projectId: e.projectId,
+      agent: e.agent,
+      updatedAt: e.createdAt,
+      connectionCount: 0,
+      matched: match(e.content),
+    });
+  }
+  for (const m of DEMO_MEMORIES) {
+    const lv = m.level === "core" ? "L3" : "L1";
+    nodes.push({
+      id: gNid(lv, m.id),
+      level: lv,
+      kind: "memory",
+      refId: m.id,
+      label: m.content.slice(0, 90),
+      content: m.content,
+      type: m.type,
+      status: m.status,
+      importance: m.importance,
+      confidence: m.confidence,
+      projectId: m.projectId,
+      agent: m.agent,
+      updatedAt: m.updatedAt,
+      connectionCount: 0,
+      matched: match(m.content),
+    });
+  }
+  for (const s of DEMO_SCENES) {
+    nodes.push({
+      id: gNid("L2", s.id),
+      level: "L2",
+      kind: "scene",
+      refId: s.id,
+      label: s.name,
+      content: s.summary,
+      type: "scene",
+      status: "active",
+      importance: 0.7,
+      confidence: 0.8,
+      projectId: s.projectId,
+      updatedAt: s.updatedAt,
+      connectionCount: 0,
+      memberCount: s.memoryIds.length,
+      matched: match(`${s.name} ${s.summary}`),
+    });
+  }
+
+  const has = (id: string) => nodes.some((n) => n.id === id);
+  const link = (a: string, b: string, type: GraphEdge["type"], strength: number) => {
+    if (a !== b && has(a) && has(b))
+      edges.push({ id: `${type}:${a}→${b}`, source: a, target: b, type, strength });
+  };
+  for (const s of DEMO_SCENES) {
+    for (const mid of s.memoryIds) {
+      const m = DEMO_MEMORIES.find((x) => x.id === mid);
+      if (!m) continue;
+      const src = gNid(m.level === "core" ? "L3" : "L1", m.id);
+      if (m.level === "core") link(gNid("L2", s.id), src, "supports", 0.9);
+      else link(src, gNid("L2", s.id), "belongs_to", 0.8);
+    }
+  }
+  for (const m of DEMO_MEMORIES) {
+    const src = gNid(m.level === "core" ? "L3" : "L1", m.id);
+    for (const sid of m.sourceIds) link(src, gNid("L0", sid), "derived_from", 0.7);
+    if (m.supersedes) {
+      const o = DEMO_MEMORIES.find((x) => x.id === m.supersedes);
+      if (o) link(src, gNid(o.level === "core" ? "L3" : "L1", o.id), "supersedes", 0.85);
+    }
+    if (m.status === "conflicted") {
+      const other = DEMO_MEMORIES.find(
+        (x) => x.id !== m.id && x.type === m.type && x.status !== "conflicted",
+      );
+      if (other)
+        link(src, gNid(other.level === "core" ? "L3" : "L1", other.id), "contradicts", 0.8);
+    }
+  }
+  for (const n of nodes) {
+    n.connectionCount = edges.filter((e) => e.source === n.id || e.target === n.id).length;
+  }
+  const strongest = nodes
+    .filter((n) => n.level === "L3")
+    .sort((a, b) => b.importance - a.importance)[0];
+  const most = nodes.slice().sort((a, b) => b.connectionCount - a.connectionCount)[0];
+  return {
+    nodes,
+    edges,
+    stats: {
+      L0: nodes.filter((n) => n.level === "L0").length,
+      L1: nodes.filter((n) => n.level === "L1").length,
+      L2: nodes.filter((n) => n.level === "L2").length,
+      L3: nodes.filter((n) => n.level === "L3").length,
+      edges: edges.length,
+      ...(strongest
+        ? { strongestCore: { id: strongest.id, refId: strongest.refId, label: strongest.label } }
+        : {}),
+      ...(most && most.connectionCount > 0
+        ? {
+            mostConnected: {
+              id: most.id,
+              refId: most.refId,
+              label: most.label,
+              connections: most.connectionCount,
+            },
+          }
+        : {}),
+    },
+    totals: { L0: 8420, L1: 3520, L2: 524, L3: 18 },
+  };
+}

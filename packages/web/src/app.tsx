@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { Suspense, lazy, useCallback, useEffect, useState } from "react";
 import { Shell } from "./components/shell";
 import { ToastHost } from "./components/ui";
 import { checkHealth, api } from "./lib/api";
@@ -6,6 +6,7 @@ import type { Route } from "./lib/types";
 import { ConflictsPage } from "./pages/conflicts";
 import { CoreMemory } from "./pages/core";
 import { Memories } from "./pages/memories";
+import { Skeletons } from "./components/ui";
 import { Overview } from "./pages/overview";
 import { ProjectDetail, Projects } from "./pages/projects";
 import { SceneDetail, Scenes } from "./pages/scenes";
@@ -14,6 +15,11 @@ import { SessionDetail, Sessions } from "./pages/sessions";
 import { Settings } from "./pages/settings";
 import { SourceDetail, Sources } from "./pages/sources";
 
+// Heavy graph bundle loads on demand so list pages stay fast.
+const MemoryNetwork = lazy(() =>
+  import("./pages/network").then((m) => ({ default: m.MemoryNetwork })),
+);
+
 function parseHash(): { route: Route; params: URLSearchParams } {
   const raw = window.location.hash.replace(/^#/, "") || "/overview";
   const [path, query] = raw.split("?");
@@ -21,6 +27,7 @@ function parseHash(): { route: Route; params: URLSearchParams } {
   const seg = (path ?? "/overview").split("/").filter(Boolean);
 
   if (seg[0] === "memories") return { route: { name: "memories" }, params };
+  if (seg[0] === "network") return { route: { name: "network" }, params };
   if (seg[0] === "scenes") return { route: { name: "scenes" }, params };
   if (seg[0] === "scene" && seg[1])
     return { route: { name: "scene", id: decodeURIComponent(seg[1]) }, params };
@@ -112,6 +119,17 @@ export function App() {
           />
         )}
         {route.name === "scenes" && <Scenes />}
+        {route.name === "network" && (
+          <Suspense
+            fallback={
+              <div className="page">
+                <Skeletons rows={4} />
+              </div>
+            }
+          >
+            <MemoryNetwork />
+          </Suspense>
+        )}
         {route.name === "scene" && <SceneDetail id={route.id} />}
         {route.name === "core" && <CoreMemory />}
         {route.name === "projects" && <Projects />}

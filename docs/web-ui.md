@@ -31,6 +31,15 @@ or `?empty=1` to preview empty states.
 - **Memories** — hybrid/keyword/semantic search, level shortcuts, popover
   filters (project, type, scope, status), sorting, paginated list, `j`/`k`
   navigation. Clicking a row opens the detail drawer.
+- **Memory Network** — neuron-graph visualization of the L0 → L1 → L2 → L3
+  architecture: force-directed layout with soft layer bands, L3 core backbone
+  with subtle glow, typed synaptic edges (strength = line weight), hover
+  cards, click to inspect, double-click to focus, right-click menu
+  (inspect/focus/edit/archive/delete), focus dimming, layer filters,
+  search-driven recall paths (L3 → L2 → L1 → L0 animated), conflict and
+  supersede states, stats overlay, minimap, and level-of-detail caps so
+  100k+ memories stay interactive. Every node/edge maps to real data via
+  `GET /api/memory-graph`.
 - **Detail drawer** — confidence/importance, provenance timeline
   (core → scene → session → original message, every node clickable),
   supersede lineage, related memories, history; edit, archive, delete.
